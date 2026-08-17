@@ -1,41 +1,100 @@
-# Implementation Plan: Location + Search Filtering & AI Notes
+# Zomato UC - Deployment Implementation Plan
 
-## Goal Description
-1. **Combine Location & Search Context**: Ensure that when a user searches for restaurants near a specific location (using coordinates or a place name), the results are filtered to match the user's semantic search context (e.g., "Italian", "pizza", "cozy").
-2. **Add AI Notes**: Augment the API response so that each recommended restaurant includes a customized "AI Note" explaining why it's a good fit for the user's preferences.
+This plan details the necessary coding changes to implement the production-level deployment strategy outlined in `deployment-plan.md`.
+
+## User Review Required
+> [!IMPORTANT]
+> Please review the `.env.template` variables list and ensure it aligns with your Oracle deployment credentials.
 
 ## Proposed Changes
 
+### 1. Environment Configuration
+#### [NEW] `.env.template`
+Add a template file in the root directory for all necessary environment variables:
+- `EUREKA_URL`
+- `KEYCLOAK_ISSUER_URI`
+- `FRONTEND_URL`
+- `USER_DB_URL`
+- `REVIEW_DB_URL`
+- `RESTAURANT_DB_URL`
+- `RECOMMENDATION_DB_URL`
+- `ELASTICSEARCH_URL`
+- AI service keys (e.g., `GEMINI_API_KEY`)
+
 ---
 
-### Recommendation Service (`recommendation-service`)
+### 2. Spring Boot Configuration (`backend/*/src/main/resources/application.yml`)
+Modify `application.yml` files in all 9 backend services to use environment variables for hardcoded URLs (with fallbacks to localhost).
 
-#### [MODIFY] [RecommendationService.java](file:///d:/GenAI/Practice/Zomato_UC/backend/recommendation-service/src/main/java/com/zomato/recommendation_service/service/RecommendationService.java)
-- Update the `getRecommendations` method's location-fetching logic.
-- **Current Behavior**: If location/lat/lng is provided, it returns all nearby restaurants and completely bypasses the semantic vector search.
-- **New Behavior**: 
-  - Fetch semantically similar restaurants using the `vectorStore` (top 20 candidates based on `context`).
-  - Fetch nearby restaurants using `restaurantServiceClient`.
-  - Perform an intersection: Return the local restaurants that are also present in the semantic similarity search results.
-  - If the intersection is empty (e.g. vector DB isn't fully populated), fallback to a basic text search filter on the local restaurants using the user's `context` string.
+#### [MODIFY] `backend/api-gateway/src/main/resources/application.yml` & `CorsConfig.java`
+- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
+- Update `spring.security.oauth2.resourceserver.jwt.issuer-uri` to `${KEYCLOAK_ISSUER_URI:http://localhost:9090/realms/zomato-realm}`
+- Update `CorsConfig.java` to allow `${FRONTEND_URL:http://localhost:4200}`
+
+#### [MODIFY] `backend/discovery-server/src/main/resources/application.yml`
+- Change `eureka.instance.hostname` to `${EUREKA_HOSTNAME:localhost}`
+
+#### [MODIFY] `backend/user-service/src/main/resources/application.yml`
+- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
+- Update `spring.datasource.url` to `${USER_DB_URL:jdbc:h2:mem:zomatodb;DB_CLOSE_DELAY=-1}`
+
+#### [MODIFY] `backend/review-service/src/main/resources/application.yml`
+- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
+- Update `spring.datasource.url` to `${REVIEW_DB_URL:jdbc:h2:mem:zomatodb;DB_CLOSE_DELAY=-1}`
+
+#### [MODIFY] `backend/search-service/src/main/resources/application.yml`
+- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
+- Update `spring.elasticsearch.uris` to `${ELASTICSEARCH_URL:http://localhost:9200}`
+
+#### [MODIFY] `backend/restaurant-service/src/main/resources/application.yml`
+- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
+- Update `spring.datasource.url` to `${RESTAURANT_DB_URL:jdbc:h2:mem:testdb}`
+
+#### [MODIFY] `backend/recommendation-service/src/main/resources/application.yml`
+- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
+- Update `spring.datasource.url` to `${RECOMMENDATION_DB_URL:jdbc:postgresql://localhost:5432/zomatodb}`
+
+#### [MODIFY] `backend/location-service/src/main/resources/application.yml`
+- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
+
+#### [MODIFY] `backend/ai-service/src/main/resources/application.yml`
+- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
 
 ---
 
-### AI Orchestrator Service (`ai-service`)
+### 3. Dockerization
 
-#### [MODIFY] [AiOrchestratorService.java](file:///d:/GenAI/Practice/Zomato_UC/backend/ai-service/src/main/java/com/zomato/ai_service/service/AiOrchestratorService.java)
-- In the `orchestrateChat` method, after retrieving the `finalCandidates` (the top 3 ranked restaurants), iterate through them.
-- For each candidate, call a new or updated method on `RecommendationAgent` to generate a brief "AI Note" explaining why it was chosen based on the user's preferences.
-- Inject this note into the candidate's map with the key `"aiNotes"` so it gets returned in the final `ChatResponse`.
+#### [NEW] `backend/*/Dockerfile` (For all 9 services)
+Create a highly optimized multi-stage `Dockerfile` for each of the 9 backend services.
+1. **Build Stage:** Use `maven:3.9-eclipse-temurin-17` to build the JAR.
+2. **Runtime Stage:** Use a lightweight `eclipse-temurin:17-jre-alpine` for the runtime.
+3. Expose the respective service port.
+4. Set memory constraints (e.g., `-Xmx512m`) in the entrypoint to ensure the 24GB RAM limit on Oracle is respected.
 
-#### [MODIFY] [RecommendationAgent.java](file:///d:/GenAI/Practice/Zomato_UC/backend/ai-service/src/main/java/com/zomato/ai_service/agent/RecommendationAgent.java)
-- Add a method (e.g., `generateAiNote(Map<String, Object> parameters, Map<String, Object> restaurant)`) to generate a concise, 1-2 sentence note for a single restaurant.
+---
+
+### 4. Docker Compose Orchestration
+
+#### [NEW] `docker/docker-compose.prod.yml`
+Create a Docker Compose file to orchestrate all services:
+- Define all 9 backend services using their respective `Dockerfile`s (`build: context: ../backend/<service>`).
+- Define an internal network (`zomato-network`).
+- Pass environment variables from `.env` to all containers.
+- Map only `api-gateway` (port 8080) and `discovery-server` (port 8761) to the host.
+
+---
+
+### 5. CI/CD Pipeline
+
+#### [NEW] `.github/workflows/deploy-backend.yml`
+Create a GitHub Actions workflow:
+- Trigger on push to `main` branch, filtering for changes in `backend/` and `docker/`.
+- Use an SSH action (`appleboy/ssh-action`) to connect to the Oracle instance using secrets.
+- Run a script on the remote server to pull the latest code and execute `docker-compose -f docker/docker-compose.prod.yml up -d --build`.
 
 ## Verification Plan
-
 ### Automated Tests
-- Run existing tests using `python e2e_tests.py` and `python test_api.py` to ensure no regression.
-
+- N/A for deployment scripts, but we will test the Docker build process locally.
 ### Manual Verification
-- Test the `/api/ai/chat` endpoint manually using `curl` or Postman with `lat`, `lng`, and a specific `query` (e.g., "Italian") to verify that the returned restaurants are both nearby and actually Italian.
-- Check that the `aiNotes` field exists in the response and contains meaningful explanations.
+- Run `docker-compose -f docker/docker-compose.prod.yml build` to verify successful multi-stage builds.
+- Ask the user to verify the generated `.env.template` and `.github/workflows/deploy-backend.yml` files.

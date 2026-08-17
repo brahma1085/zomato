@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  discovery-server:
+    build:
+      context: ../backend/discovery-server
+    ports:
+      - "8761:8761"
+    environment:
+      - EUREKA_HOSTNAME=${EUREKA_HOSTNAME:-localhost}
+    networks:
+      - zomato-network
+
+  api-gateway:
+    build:
+      context: ../backend/api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_URL=${EUREKA_URL:-http://discovery-server:8761/eureka/}
+      - KEYCLOAK_ISSUER_URI=${KEYCLOAK_ISSUER_URI:-http://localhost:9090/realms/zomato-realm}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:4200}
+    depends_on:
+      - discovery-server
+    networks:
+      - zomato-network
+
+  user-service:
+    build:
+      context: ../backend/user-service
+    environment:
+      - EUREKA_URL=${EUREKA_URL:-http://discovery-server:8761/eureka/}
+      - USER_DB_URL=${USER_DB_URL:-jdbc:h2:mem:zomatodb;DB_CLOSE_DELAY=-1}
+    depends_on:
+      - discovery-server
+    networks:
+      - zomato-network
+
+  restaurant-service:
+    build:
+      context: ../backend/restaurant-service
+    environment:
+      - EUREKA_URL=${EUREKA_URL:-http://discovery-server:8761/eureka/}
+      - RESTAURANT_DB_URL=${RESTAURANT_DB_URL:-jdbc:h2:mem:testdb}
+    depends_on:
+      - discovery-server
+    networks:
+      - zomato-network
+
+  search-service:
+    build:
+      context: ../backend/search-service
+    environment:
+      - EUREKA_URL=${EUREKA_URL:-http://discovery-server:8761/eureka/}
+      - ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-http://localhost:9200}
+    depends_on:
+      - discovery-server
+    networks:
+      - zomato-network
+
+  review-service:
+    build:
+      context: ../backend/review-service
+    environment:
+      - EUREKA_URL=${EUREKA_URL:-http://discovery-server:8761/eureka/}
+      - REVIEW_DB_URL=${REVIEW_DB_URL:-jdbc:h2:mem:zomatodb;DB_CLOSE_DELAY=-1}
+    depends_on:
+      - discovery-server
+    networks:
+      - zomato-network
+
+  location-service:
+    build:
+      context: ../backend/location-service
+    environment:
+      - EUREKA_URL=${EUREKA_URL:-http://discovery-server:8761/eureka/}
+    depends_on:
+      - discovery-server
+    networks:
+      - zomato-network
+
+  ai-service:
+    build:
+      context: ../backend/ai-service
+    environment:
+      - EUREKA_URL=${EUREKA_URL:-http://discovery-server:8761/eureka/}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    depends_on:
+      - discovery-server
+    networks:
+      - zomato-network
+
+  recommendation-service:
+    build:
+      context: ../backend/recommendation-service
+    environment:
+      - EUREKA_URL=${EUREKA_URL:-http://discovery-server:8761/eureka/}
+      - RECOMMENDATION_DB_URL=${RECOMMENDATION_DB_URL:-jdbc:postgresql://localhost:5432/zomatodb}
+    depends_on:
+      - discovery-server
+    networks:
+      - zomato-network
+
+networks:
+  zomato-network:
+    driver: bridge

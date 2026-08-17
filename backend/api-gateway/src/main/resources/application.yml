@@ -12,12 +12,12 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9090/realms/zomato-realm
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:9090/realms/zomato-realm}
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
 
 logging:
   level:

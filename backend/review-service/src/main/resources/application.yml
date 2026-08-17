@@ -5,7 +5,7 @@ spring:
   application:
     name: review-service
   datasource:
-    url: jdbc:h2:mem:zomatodb;DB_CLOSE_DELAY=-1
+    url: ${REVIEW_DB_URL:jdbc:h2:mem:zomatodb;DB_CLOSE_DELAY=-1}
     username: sa
     password: 
     driver-class-name: org.h2.Driver
@@ -24,4 +24,4 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
