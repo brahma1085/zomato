@@ -1,0 +1,81 @@
+<div class="min-h-screen bg-gray-50 p-6 font-sans">
+  <div *ngIf="loading" class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+  </div>
+
+  <div *ngIf="!loading && restaurant" class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
+    <div class="flex items-center gap-4 p-4 border-b border-gray-200 bg-gray-100">
+      <a routerLink="/" class="text-blue-500 hover:text-blue-700 font-medium flex items-center gap-1">
+        <span>&larr; Back to Search</span>
+      </a>
+    </div>
+    
+    <div class="h-64 bg-gradient-to-r from-red-400 to-red-600 w-full flex items-center justify-center text-white text-3xl font-bold shadow-inner relative overflow-hidden">
+      <div class="absolute top-4 right-4 bg-red-800 text-white text-sm font-bold px-3 py-1.5 rounded-full shadow-lg z-10">
+        {{ matchPercentage }}% Match For You
+      </div>
+      <img *ngIf="restaurant?.imageUrl" [src]="restaurant?.imageUrl" [alt]="restaurant?.name" class="w-full h-full object-cover">
+      <div *ngIf="!restaurant?.imageUrl" class="w-full h-full flex items-center justify-center">
+        {{ restaurant?.name }} Image Placeholder
+      </div>
+    </div>
+    
+    <div class="p-8">
+      <div class="flex justify-between items-start mb-4">
+        <div>
+          <h1 class="text-4xl font-bold text-gray-900 mb-2">{{ restaurant?.name || restaurant?.restaurantName }}</h1>
+          <p class="text-gray-500 text-lg flex items-center gap-2">
+            <span class="font-medium text-gray-700">${{ restaurant?.costForTwo || restaurant?.priceRange || 'Unknown' }}</span> • 
+            {{ (restaurant?.cuisines ? restaurant.cuisines.join(', ') : restaurant?.cuisineType) || 'Various' }} • 
+            {{ restaurant?.distance || '1.2 mi' }}
+          </p>
+        </div>
+        <div class="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-lg border border-green-200 shadow-sm">
+          <span class="text-green-700 font-bold text-2xl">{{ restaurant?.averageRating || restaurant?.rating || '4.0' }}</span>
+          <span class="text-yellow-500 text-xl">★</span>
+        </div>
+      </div>
+      
+      <p class="text-gray-700 text-lg mb-6">{{ restaurant?.description }}</p>
+      <p class="text-gray-500 text-sm mb-6">{{ restaurant?.address }}, {{ restaurant?.city }}</p>
+      
+      <div class="bg-blue-50 p-6 rounded-xl border border-blue-100 mb-8 shadow-sm">
+        <h3 class="text-blue-800 font-bold mb-2 flex items-center gap-2">
+          <span class="bg-blue-200 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center text-sm">AI</span>
+          AI Summary
+        </h3>
+        <p class="text-blue-900 italic text-lg">{{ restaurant?.aiNotes || "Highly rated due to its " + (restaurant?.ambiences?.join(' and ') || 'great') + " vibe. Average cost is $" + (restaurant?.costForTwo || '35') + " for two." }}</p>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Vibe & Highlights</h3>
+        <div class="flex flex-wrap gap-2">
+          @for (tag of (restaurant?.ambiences || restaurant?.attributes || ['Cozy']); track tag) {
+            <span class="text-sm uppercase font-bold text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 shadow-sm">{{ tag }}</span>
+          }
+        </div>
+      </div>
+      
+      <hr class="border-gray-200 my-8">
+
+      <div>
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Recent Reviews</h3>
+        <div class="space-y-4">
+          @if (reviews && reviews.length > 0) {
+            @for (review of reviews; track review.id) {
+              <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div class="flex justify-between">
+                  <p class="font-bold text-gray-900 mb-1">User {{ review.userId }}</p>
+                  <p class="text-yellow-500">{{ review.rating }} ★</p>
+                </div>
+                <p class="text-gray-700">"{{ review.comment }}"</p>
+              </div>
+            }
+          } @else {
+            <p class="text-gray-500">No reviews found for this restaurant.</p>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

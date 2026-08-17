@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Epicure AI - Intelligent Discovery</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#131b2e",
+                      "on-background": "#dae2fd",
+                      "surface-bright": "#31394d",
+                      "secondary-fixed": "#6ffbbe",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "primary-fixed-dim": "#d0bcff",
+                      "on-secondary-fixed-variant": "#005236",
+                      "inverse-on-surface": "#283044",
+                      "on-secondary": "#003824",
+                      "error": "#ffb4ab",
+                      "on-error": "#690005",
+                      "on-primary-fixed": "#23005c",
+                      "primary-fixed": "#e9ddff",
+                      "on-error-container": "#ffdad6",
+                      "secondary-container": "#00a572",
+                      "outline-variant": "#494454",
+                      "surface-container-highest": "#2d3449",
+                      "on-tertiary-container": "#3e2400",
+                      "inverse-primary": "#6d3bd7",
+                      "outline": "#958ea0",
+                      "tertiary": "#ffb95f",
+                      "primary-container": "#a078ff",
+                      "surface-dim": "#0b1326",
+                      "primary": "#d0bcff",
+                      "secondary": "#4edea3",
+                      "tertiary-container": "#ca8100",
+                      "surface-container-high": "#222a3d",
+                      "on-surface-variant": "#cbc3d7",
+                      "on-surface": "#dae2fd",
+                      "tertiary-fixed": "#ffddb8",
+                      "surface-container": "#171f33",
+                      "on-secondary-container": "#00311f",
+                      "inverse-surface": "#dae2fd",
+                      "error-container": "#93000a",
+                      "on-secondary-fixed": "#002113",
+                      "background": "#0b1326",
+                      "surface-variant": "#2d3449",
+                      "surface": "#0b1326",
+                      "on-tertiary-fixed": "#2a1700",
+                      "surface-tint": "#d0bcff",
+                      "on-tertiary": "#472a00",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "secondary-fixed-dim": "#4edea3",
+                      "on-primary-container": "#340080",
+                      "surface-container-lowest": "#060e20",
+                      "on-primary-fixed-variant": "#5516be",
+                      "on-primary": "#3c0091"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-margin": "24px",
+                      "section-gap": "64px",
+                      "base": "8px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "label-caps": [
+                              "Geist"
+                      ],
+                      "mono-data": [
+                              "Geist"
+                      ],
+                      "display-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "mono-data": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(45, 52, 73, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-panel-heavy {
+            background: rgba(34, 42, 61, 0.6);
+            backdrop-filter: blur(32px);
+            -webkit-backdrop-filter: blur(32px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .ai-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(208, 188, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            100% { left: 200%; }
+        }
+
+        .gradient-text-primary {
+            background: linear-gradient(135deg, theme('colors.primary'), theme('colors.secondary'));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Hide scrollbar for horizontal scroll areas */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Custom map overlay gradient */
+        .map-overlay {
+            background: radial-gradient(circle at 50% 0%, rgba(109, 59, 215, 0.15) 0%, rgba(11, 19, 38, 1) 70%);
+        }
+    </style>
+</head>
+<body class="pb-32"> <!-- Padding bottom for safe area + bottom nav -->
+<!-- TopAppBar JSON Component -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-primary/10">
+<div class="flex justify-between items-center px-container-margin h-16">
+<button class="text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 0;">menu</span>
+</button>
+<h1 class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary tracking-tight">Epicure AI</h1>
+<button class="hover:opacity-80 transition-opacity active:scale-95 transition-transform overflow-hidden rounded-full w-8 h-8 flex items-center justify-center border border-white/10">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="A macro, high-resolution portrait photograph of a young woman with warm lighting, serving as a user profile avatar. Modern aesthetic, soft background blur." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZxp4cpM91STQAXI7-T-9IAnZUcFdf1_3WCK39ULzXQTq4sGxs8Xxp2FD-TZiWFhGiJBLvrwoXTdTa-rHgIw8G83mwxuSYIWHPuDxvfeJYM66-lu8n1R9SBR_VyA7fuehqyuV2Wu7IXCl7zxWeWs3kDw2H8NPyFV1WJOvR2SeUZ7khpgfJtbFMGT23LzNVOEH6ApACOMly6n1eWqPLrfD6Z8bBSOmPFPHgtksyBfqtfYfPPawxci4"/>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-20 px-4 md:px-container-margin max-w-7xl mx-auto flex flex-col gap-section-gap">
+<!-- Hero Section -->
+<section class="relative w-full rounded-3xl overflow-hidden glass-panel-heavy mt-6 border border-white/5 shadow-[0_20px_40px_rgba(0,0,0,0.3)] min-h-[300px] flex flex-col items-center justify-center p-6 text-center">
+<!-- Background Map Illusion -->
+<div class="absolute inset-0 z-0 map-overlay pointer-events-none"></div>
+<div class="absolute inset-0 z-0 opacity-20 pointer-events-none" data-alt="A stylized, dark-mode abstract topographical map or neural network visualization with subtle glowing nodes in purple and green. High-end tech aesthetic, deep midnight slate background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCecFx6Q8qq-ZAAUwhF6BSnvZK_NZWEB9xblGN5X4z0-AUQaQJuDVPaS0j_tkryxUbDGUtipYke2s7D4-I8vvugIk5sr--7cVgOBgLu29y_vyaQ46da84UmVmQchLdWzLhc14HseJ2OYuB2N10eCAhtlluIZbwrB2k-z--FIUKConzRWkfbw65AnBR0kzO17zQdPIvyEywOfZwjc2JxQf5Nv3JxFOplM1F1ucqcjXCQhoc1U2LxGw4')"></div>
+<div class="relative z-10 w-full max-w-2xl flex flex-col gap-6 items-center">
+<h2 class="font-headline-md text-headline-md text-on-background max-w-[280px] md:max-w-md mx-auto">
+                    Where would you like to <span class="gradient-text-primary">explore</span> today?
+                </h2>
+<!-- AI Search Bar -->
+<div class="w-full relative group">
+<div class="absolute inset-0 bg-primary/20 rounded-full blur-xl group-hover:bg-primary/30 transition-all duration-500"></div>
+<div class="relative glass-panel rounded-full flex items-center p-2 px-4 shadow-lg border border-white/10 overflow-hidden">
+<span class="material-symbols-outlined text-primary mr-3 ai-shimmer" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<input class="bg-transparent border-none w-full text-on-surface focus:ring-0 placeholder:text-on-surface-variant/50 font-body-md text-body-md py-3" placeholder="Ask AI where you want to eat..." type="text"/>
+<button class="bg-primary/10 text-primary hover:bg-primary/20 rounded-full w-10 h-10 flex items-center justify-center transition-colors ml-2 flex-shrink-0">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">mic</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Occasion Selector (Quick Pills) -->
+<section class="w-full flex flex-col gap-4 -mt-8">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider px-2">Set the mood</h3>
+<div class="flex overflow-x-auto gap-3 pb-4 px-2 no-scrollbar scroll-smooth">
+<button class="whitespace-nowrap px-6 py-3 rounded-full border border-white/10 bg-surface-container-low hover:bg-surface-bright text-on-surface font-body-md text-body-md transition-all flex items-center gap-2">
+<span>🍝</span> Date Night
+                </button>
+<button class="whitespace-nowrap px-6 py-3 rounded-full border border-secondary/30 bg-secondary/10 text-secondary font-body-md text-body-md transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(78,222,163,0.1)]">
+<span>👨‍👩‍👧</span> Family Dinner
+                </button>
+<button class="whitespace-nowrap px-6 py-3 rounded-full border border-white/10 bg-surface-container-low hover:bg-surface-bright text-on-surface font-body-md text-body-md transition-all flex items-center gap-2">
+<span>🍔</span> Cheap Eats
+                </button>
+<button class="whitespace-nowrap px-6 py-3 rounded-full border border-white/10 bg-surface-container-low hover:bg-surface-bright text-on-surface font-body-md text-body-md transition-all flex items-center gap-2">
+<span>🎉</span> Celebration
+                </button>
+<button class="whitespace-nowrap px-6 py-3 rounded-full border border-white/10 bg-surface-container-low hover:bg-surface-bright text-on-surface font-body-md text-body-md transition-all flex items-center gap-2">
+<span>💼</span> Business Lunch
+                </button>
+</div>
+</section>
+<!-- Cravings Section (Bento Grid) -->
+<section class="w-full flex flex-col gap-6">
+<div class="flex justify-between items-end px-2">
+<h3 class="font-headline-md text-headline-md text-on-background">What are you craving?</h3>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-2">
+<!-- Tile 1 -->
+<div class="relative rounded-2xl overflow-hidden aspect-square group cursor-pointer border border-white/10 hover:border-primary/50 transition-colors shadow-lg">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-transparent z-10"></div>
+<img alt="Spicy Food" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A macro, top-down photograph of a vibrant, spicy Asian noodle dish. Rich red chili oil, fresh green scallions, steam rising. Dark slate background, cinematic studio lighting, high contrast, vivid colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQh0M44XL5sWNbwFZuq9TVQvzmqZafiT2QeDrkG8s1rbi4zTrob-KGSuSJCaySDffTOnA7jVwTGwdVCw3RtF5spNla6S7tb0R3y2aTkSXyaXpxNox6W3delZO9v55d5IlCv04Xr1QKKmVoHRQ3sCidcMMF38hxCC88CAQOlVPPn1739zQP8ja92v8FqSeBHhrrqOP5ajE161_1yQQC2UVjNz7ZIdlKHygQcyxzHHA-l3e3zsWGuZc"/>
+<div class="absolute bottom-0 left-0 p-4 z-20 w-full">
+<span class="font-label-caps text-label-caps text-error bg-error/10 px-2 py-1 rounded backdrop-blur-md mb-2 inline-block border border-error/20">Spicy</span>
+<h4 class="font-body-lg text-body-lg text-white font-medium">Heat it up</h4>
+</div>
+</div>
+<!-- Tile 2 -->
+<div class="relative rounded-2xl overflow-hidden aspect-square group cursor-pointer border border-white/10 hover:border-tertiary/50 transition-colors shadow-lg">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-transparent z-10"></div>
+<img alt="Comfort Food" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A close-up, cozy photograph of a rich, bubbling macaroni and cheese or hearty stew in a rustic ceramic bowl. Warm, inviting lighting, comforting mood, dark wooden table backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6Fb_S_Y8ETG5WYHWBiBR_E1Vw21pt1cMAZUE0n_m9gyCpSUesVA60ZSRl9C7J54tTEJjGAYbUQdKbRpY590nJONSZvn680R0Rc0M3Utj-AFb62CbgK71_ikU81aRUZlDP1m2nabv3VdcBSXrVEamz6soFsfFI1YLFyu1oAaYGUhU3bXGKm3anJgkEqN3p71vNDP32CbPchz9_ZsAe-gZQJQwmciTKBxlX-uV_5o-wYTWeisIAQnc"/>
+<div class="absolute bottom-0 left-0 p-4 z-20 w-full">
+<span class="font-label-caps text-label-caps text-tertiary bg-tertiary/10 px-2 py-1 rounded backdrop-blur-md mb-2 inline-block border border-tertiary/20">Comfort</span>
+<h4 class="font-body-lg text-body-lg text-white font-medium">Soul Food</h4>
+</div>
+</div>
+<!-- Tile 3 -->
+<div class="relative rounded-2xl overflow-hidden aspect-square group cursor-pointer border border-white/10 hover:border-secondary/50 transition-colors shadow-lg col-span-2 md:col-span-1">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-transparent z-10"></div>
+<img alt="Street Food" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A dynamic, high-contrast photograph of authentic street food tacos being prepared on a sizzling flat top grill at night. Neon lights in the blurred background, vibrant greens and reds of salsa, smoky atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzoM9HskXaDmhok_KxUIbcyvoN-SSVvWIlCywxXY5-9n5fMQmQzQygxdY6pWnmKbiz-aEJX_QbEMDem6GnlDcrHM1sTFVvXiqKbfnRZo7J166JymM0F_IQ9dCTCCphmzu764y8Fjsdpic9UvnqxhgT4v4bgGibyE03n5QGNQRkwQ0sUVUz0pXG5Stg11imQvJW3KHuaY0ZZtn5AiojZdNqyh7TZELqUyuO55eUARNPRmC6lFZ8eGY"/>
+<div class="absolute bottom-0 left-0 p-4 z-20 w-full">
+<span class="font-label-caps text-label-caps text-secondary bg-secondary/10 px-2 py-1 rounded backdrop-blur-md mb-2 inline-block border border-secondary/20">Casual</span>
+<h4 class="font-body-lg text-body-lg text-white font-medium">Street Bites</h4>
+</div>
+</div>
+</div>
+</section>
+<!-- Nearby Trending Widget -->
+<section class="w-full flex flex-col gap-6 mb-8">
+<div class="flex justify-between items-center px-2">
+<h3 class="font-headline-md text-headline-md text-on-background flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+                    Trending Nearby
+                </h3>
+<button class="text-primary font-label-caps text-label-caps uppercase tracking-wider hover:opacity-80 transition-opacity flex items-center">
+                    Map View <span class="material-symbols-outlined text-sm ml-1">map</span>
+</button>
+</div>
+<div class="flex flex-col gap-4 px-2">
+<!-- List Item 1 -->
+<div class="glass-panel rounded-2xl p-4 flex gap-4 items-center cursor-pointer hover:bg-surface-bright/50 transition-colors group">
+<div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 relative">
+<img alt="Restaurant thumbnail" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A moody, elegant photograph of a sophisticated sushi bar interior. Warm ambient lighting, dark sleek counter, blurred chef in background, high-end premium aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnnGuRZljVLy96ElelxRsNFs-8yTrhqe-Zj7FhTKKae2DCdvrq2l1za3rqd9MYj3hdlP6-Bcgfd9-n2mc9baQfKO7QtJKE3N4CQPjrUs5yLJN8G2-xwwqiyKIL5TmHwL9xVLlxY80pgsJSCu_eNvf-z2LI-0WHTgS5w-w3UXuytIID0yI3PTiv1aymP7apKMuiEF-TLCbVxAKJV7tvuqyNG8x8qlNybfRdHMiMLWwTZfNq288FFWg"/>
+<!-- AI Match Ring overlay -->
+<div class="absolute inset-0 flex items-center justify-center bg-background/40 backdrop-blur-[2px]">
+<div class="w-12 h-12 rounded-full border-2 border-secondary border-t-primary flex items-center justify-center">
+<span class="font-mono-data text-xs font-bold text-white">98%</span>
+</div>
+</div>
+</div>
+<div class="flex-grow">
+<h4 class="font-body-lg text-body-lg text-on-surface font-semibold">Omiya Sushi</h4>
+<p class="font-body-md text-body-md text-on-surface-variant/70 text-sm">Japanese • $$$ • 0.4 mi</p>
+<div class="flex gap-2 mt-2">
+<span class="text-xs px-2 py-0.5 rounded border border-white/10 bg-white/5 text-on-surface-variant">Exceptional Service</span>
+</div>
+</div>
+<div class="flex-shrink-0 text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="glass-panel rounded-2xl p-4 flex gap-4 items-center cursor-pointer hover:bg-surface-bright/50 transition-colors group">
+<div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 relative">
+<img alt="Restaurant thumbnail" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A bright, modern photograph of an artisanal pizza with blistered crust and fresh basil on a dark slate table. Premium light-mode aesthetic but photographed against dark moody backgrounds." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlgxYHxKHN2WH8A6_0_7EFWiw4hBNvbAPDfY6MrEqE3QIP0cZJBEKPzazSOa9lr0MfC-n90KUKTOSDiCcgbUsl8WP4XmzeqV4_MVO00fmbuhtusIeB5qkdBNNIhWdPG5LsjFuzN2dqaY5CpwhutjMRPJWNpKlH1iojMCOJG7VtUyebeqNezHZM1NDTwf5e20QHHXXoinkAborCwe8AV7My_wD026N835WBME7dHvB3Gs6R53twuww"/>
+<!-- AI Match Ring overlay -->
+<div class="absolute inset-0 flex items-center justify-center bg-background/40 backdrop-blur-[2px]">
+<div class="w-12 h-12 rounded-full border-2 border-secondary/60 border-t-primary flex items-center justify-center">
+<span class="font-mono-data text-xs font-bold text-white">92%</span>
+</div>
+</div>
+</div>
+<div class="flex-grow">
+<h4 class="font-body-lg text-body-lg text-on-surface font-semibold">Lumina Woodfire</h4>
+<p class="font-body-md text-body-md text-on-surface-variant/70 text-sm">Italian • $$ • 1.2 mi</p>
+<div class="flex gap-2 mt-2">
+<span class="text-xs px-2 py-0.5 rounded border border-white/10 bg-white/5 text-on-surface-variant">Lively Atmosphere</span>
+</div>
+</div>
+<div class="flex-shrink-0 text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar JSON Component -->
+<!-- Mobile only shell, active state on Discovery -->
+<nav class="md:hidden fixed bottom-0 w-full rounded-t-xl z-50 bg-surface-container-lowest/60 backdrop-blur-2xl border-t border-white/5 shadow-[0_-8px_32px_rgba(0,0,0,0.4)] flex justify-around items-center h-20 pb-safe px-4">
+<!-- Active: Discovery -->
+<button class="flex flex-col items-center justify-center text-secondary font-bold scale-110 transition-all hover:text-primary active:scale-90 duration-200">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-label-caps text-label-caps font-display-lg-mobile text-[10px] uppercase">Discovery</span>
+</button>
+<!-- Inactive: AI Chat -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-primary transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">auto_awesome</span>
+<span class="font-label-caps text-label-caps text-[10px] uppercase">AI Chat</span>
+</button>
+<!-- Inactive: Favorites -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-primary transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">favorite</span>
+<span class="font-label-caps text-label-caps text-[10px] uppercase">Favorites</span>
+</button>
+<!-- Inactive: Profile -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-primary transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">person_pin</span>
+<span class="font-label-caps text-label-caps text-[10px] uppercase">Profile</span>
+</button>
+</nav>
+</body></html>

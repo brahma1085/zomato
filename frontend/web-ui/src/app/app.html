@@ -1,0 +1,46 @@
+<main class="min-h-screen bg-background flex flex-col text-on-background">
+  @if (isAuthenticated()) {
+  <!-- Header -->
+  <header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-primary/10 h-16">
+    <div class="flex justify-between items-center px-container-margin h-full max-w-7xl mx-auto w-full">
+      <div class="flex items-center gap-2">
+        <h1 class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary tracking-tight">Epicure AI</h1>
+      </div>
+      <div class="flex items-center gap-4">
+        <button (click)="logout()" class="text-on-surface-variant hover:text-error transition-colors font-label-caps uppercase tracking-wider text-xs">Logout</button>
+        <div class="h-8 w-8 bg-surface-bright rounded-full flex items-center justify-center text-primary font-bold border border-white/10 shadow-inner">
+          U
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex flex-col flex-1 w-full overflow-hidden relative">
+    <router-outlet></router-outlet>
+  </div>
+  } @else {
+  <div class="flex flex-1 items-center justify-center bg-background overflow-hidden relative">
+    <!-- Decorative background elements -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+      <div class="absolute -top-[10%] -right-[5%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[100px] opacity-50"></div>
+      <div class="absolute top-[60%] -left-[10%] w-[30%] h-[30%] bg-secondary/20 rounded-full blur-[100px] opacity-50"></div>
+    </div>
+    
+    <div class="glass-panel p-10 rounded-3xl shadow-2xl w-full max-w-md text-center relative z-10 border border-white/10">
+      <h2 class="text-3xl font-display font-bold text-primary mb-2 tracking-tight">Epicure AI</h2>
+      <p class="text-on-surface-variant mb-8 leading-relaxed font-body">Discover the perfect restaurant tailored to your taste, mood, and location.</p>
+      
+      <div class="flex flex-col gap-4">
+        <div class="flex items-center justify-center space-x-2 text-sm text-secondary mb-2">
+          <svg class="animate-spin h-5 w-5 text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span class="font-mono text-sm">Connecting to Secure Login...</span>
+        </div>
+        <p class="text-xs text-on-surface-variant/50">You will be redirected automatically.</p>
+      </div>
+    </div>
+  </div>
+  }
+</main>

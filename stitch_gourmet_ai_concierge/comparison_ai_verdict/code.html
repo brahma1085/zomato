@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Comparison &amp; AI Verdict</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&amp;family=Hanken+Grotesk:wght@400..800&amp;family=Inter:wght@400..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#131b2e",
+                        "on-background": "#dae2fd",
+                        "surface-bright": "#31394d",
+                        "secondary-fixed": "#6ffbbe",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "primary-fixed-dim": "#d0bcff",
+                        "on-secondary-fixed-variant": "#005236",
+                        "inverse-on-surface": "#283044",
+                        "on-secondary": "#003824",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "on-primary-fixed": "#23005c",
+                        "primary-fixed": "#e9ddff",
+                        "on-error-container": "#ffdad6",
+                        "secondary-container": "#00a572",
+                        "outline-variant": "#494454",
+                        "surface-container-highest": "#2d3449",
+                        "on-tertiary-container": "#3e2400",
+                        "inverse-primary": "#6d3bd7",
+                        "outline": "#958ea0",
+                        "tertiary": "#ffb95f",
+                        "primary-container": "#a078ff",
+                        "surface-dim": "#0b1326",
+                        "primary": "#d0bcff",
+                        "secondary": "#4edea3",
+                        "tertiary-container": "#ca8100",
+                        "surface-container-high": "#222a3d",
+                        "on-surface-variant": "#cbc3d7",
+                        "on-surface": "#dae2fd",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface-container": "#171f33",
+                        "on-secondary-container": "#00311f",
+                        "inverse-surface": "#dae2fd",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed": "#002113",
+                        "background": "#0b1326",
+                        "surface-variant": "#2d3449",
+                        "surface": "#0b1326",
+                        "on-tertiary-fixed": "#2a1700",
+                        "surface-tint": "#d0bcff",
+                        "on-tertiary": "#472a00",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-primary-container": "#340080",
+                        "surface-container-lowest": "#060e20",
+                        "on-primary-fixed-variant": "#5516be",
+                        "on-primary": "#3c0091"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-margin": "24px",
+                        "section-gap": "64px",
+                        "base": "8px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Geist"],
+                        "mono-data": ["Geist"],
+                        "display-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "mono-data": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-right: 1px solid rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .glass-header {
+            background: rgba(11, 19, 38, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .ai-gradient-bg {
+            background: linear-gradient(135deg, rgba(208, 188, 255, 0.15) 0%, rgba(78, 222, 163, 0.15) 100%);
+            position: relative;
+        }
+        
+        .ai-gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(208, 188, 255, 0.5) 0%, rgba(78, 222, 163, 0.5) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .shimmer-loading {
+            background: linear-gradient(90deg, rgba(208,188,255,0) 0%, rgba(208,188,255,0.1) 50%, rgba(208,188,255,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Hide scrollbar for clean horizontal scroll */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-primary/10 transition-transform">
+<div class="flex justify-between items-center px-container-margin h-16 w-full max-w-7xl mx-auto">
+<button class="text-on-surface-variant hover:text-primary active:scale-95 transition-all p-2 -ml-2 rounded-full hover:bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight truncate px-4">Epicure AI Comparison</h1>
+<button class="text-on-surface-variant hover:opacity-80 active:scale-95 transition-all w-8 h-8 rounded-full overflow-hidden border border-white/10">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="A macro shot of a sleek, dark glass circular profile avatar placeholder on a deep midnight blue background. The surface is highly reflective with subtle light refractions and a premium, minimalist tech aesthetic, characteristic of high-end AI interfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyFGX9rZVfKZKRA6nU2kZuM0VRDofbSnw2gRlhJWhdnmtH9pIAMNDLEHfawhX6M48LPtFM6XX9257jV_6A8QkmvxgSVqYh-5vDROlSAaFiPWnrqnEwOXwml8O-uMw-DKWLhpC_34p_BXw2Xt8nnhtc9uaU5PQpEYGIKketNTK4PxNzHkF8WjyLXVeb9S2Sw_I5r3-MDXZpVWdBzMdRXzh2h1jhUmOQEaJMXiX59R_QMi2WmKKnVzE"/>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow pt-24 pb-32 px-container-margin md:px-8 w-full max-w-7xl mx-auto flex flex-col gap-section-gap">
+<!-- Header & Context -->
+<div class="flex flex-col gap-4 text-center max-w-2xl mx-auto">
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg font-bold text-on-background tracking-tight">
+                Evaluating your options
+            </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant/80">
+                Analyzing 3 selected venues based on your preference for spicy food and family-friendly atmosphere.
+            </p>
+</div>
+<!-- Comparison Matrix (Horizontal Scroll) -->
+<div class="w-full overflow-x-auto no-scrollbar pb-8 -mx-container-margin px-container-margin md:mx-0 md:px-0">
+<div class="flex gap-6 min-w-max">
+<!-- Restaurant 1: The Winner -->
+<div class="glass-card rounded-xl p-6 flex flex-col gap-6 w-72 md:w-80 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+<!-- Winner Badge -->
+<div class="absolute top-0 right-0 bg-secondary text-on-secondary font-label-caps text-label-caps px-3 py-1 rounded-bl-lg font-bold z-10 shadow-lg">
+                        AI TOP PICK
+                    </div>
+<div class="flex flex-col gap-4">
+<div class="h-40 rounded-lg overflow-hidden relative">
+<img alt="Omiya Sushi" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A beautifully lit, high-end culinary photo of fresh, vibrant sushi served on a dark slate board. Subtle steam rises from nearby spicy dishes. The lighting is dramatic and moody, emphasizing the textures of the fresh fish and rich sauces, fitting a premium dining discovery app interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu-665qWlC2mOyUSPD2zDT7mYrbMEZi3igvdpUrBdpY9N4IkMT7OlKhz7PIaH9V8vulaj1hFbY0C9QlO0N3upmGCqaROIyiGP1BlO6M1icI03x6mA83bgYytc6p04-MNihLx2p_YKxIP-gZgDzUa_0lWKMixMZqhlq_zr_mN8UUhT9riN-fiQqRWBMG9toBu0LXYNacQcyAJdSw4i_LH9daUcPn0vvEn0V0Tff2ELztikPhBt_p3E"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent"></div>
+<h3 class="absolute bottom-3 left-3 font-headline-md text-headline-md text-on-background font-bold drop-shadow-md">Omiya Sushi</h3>
+</div>
+<p class="text-on-surface-variant font-body-md text-sm line-clamp-2">Authentic Japanese with a modern, spicy twist and comfortable seating.</p>
+</div>
+<div class="flex flex-col gap-4 w-full">
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">star</span> Rating</span>
+<span class="font-mono-data text-mono-data text-secondary font-bold">4.8</span>
+</div>
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">location_on</span> Distance</span>
+<span class="font-mono-data text-mono-data text-on-background">1.2 mi</span>
+</div>
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">payments</span> Cost (for 2)</span>
+<span class="font-mono-data text-mono-data text-on-background">$$$</span>
+</div>
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">restaurant</span> Cuisine</span>
+<span class="font-mono-data text-mono-data text-on-background text-right">Japanese<br/><span class="text-xs text-secondary opacity-80">Spicy Options</span></span>
+</div>
+<div class="flex items-center justify-between pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">deck</span> Ambience</span>
+<span class="font-mono-data text-mono-data text-on-background text-right">Casual<br/><span class="text-xs text-primary opacity-80">Family Friendly</span></span>
+</div>
+</div>
+</div>
+<!-- Restaurant 2 -->
+<div class="glass-card rounded-xl p-6 flex flex-col gap-6 w-72 md:w-80 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300 opacity-70 hover:opacity-100">
+<div class="flex flex-col gap-4">
+<div class="h-40 rounded-lg overflow-hidden relative">
+<img alt="Siam Spice" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A stylized, slightly moody photograph of a bustling Thai street food inspired restaurant interior. Warm, spicy orange and red tones dominate the lighting, contrasting with deep shadows. The atmosphere is vibrant but perhaps slightly too intimate or dark for a large family, fitting the premium aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrVeUaGd2cbxDj16wo178WM5wAv3JfErGcAd68qcVqcEpb4NFNATufZlILSp4faoeLAbl7sc3NwB-Tm6dJf9iiScrKzcZdDgiPv3bOVQGa_WpaEyX9ZQL73NfQv_fA8KSsv9Bqs1VW3nP6nlxkaDAmyrD_CRwrkasSpo_QLuc3MQVu8P-pSNtDoXYOpuXLs-rIQn83HkHUHJcLZrQnjNmqY5OjQCx1TL5UUiqaaP4QRP8tQJjOtrI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent"></div>
+<h3 class="absolute bottom-3 left-3 font-headline-md text-headline-md text-on-background font-bold drop-shadow-md">Siam Spice</h3>
+</div>
+<p class="text-on-surface-variant font-body-md text-sm line-clamp-2">Intense, authentic Thai street food flavors in an intimate setting.</p>
+</div>
+<div class="flex flex-col gap-4 w-full">
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">star</span> Rating</span>
+<span class="font-mono-data text-mono-data text-on-background">4.6</span>
+</div>
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">location_on</span> Distance</span>
+<span class="font-mono-data text-mono-data text-on-background">0.8 mi</span>
+</div>
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">payments</span> Cost (for 2)</span>
+<span class="font-mono-data text-mono-data text-on-background">$$</span>
+</div>
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">restaurant</span> Cuisine</span>
+<span class="font-mono-data text-mono-data text-on-background text-right">Thai<br/><span class="text-xs text-secondary opacity-80">Very Spicy</span></span>
+</div>
+<div class="flex items-center justify-between pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">deck</span> Ambience</span>
+<span class="font-mono-data text-mono-data text-on-background text-right">Intimate<br/><span class="text-xs text-error opacity-80">Not Family Focused</span></span>
+</div>
+</div>
+</div>
+<!-- Restaurant 3 -->
+<div class="glass-card rounded-xl p-6 flex flex-col gap-6 w-72 md:w-80 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300 opacity-60 hover:opacity-100">
+<div class="flex flex-col gap-4">
+<div class="h-40 rounded-lg overflow-hidden relative">
+<img alt="Bella Noche" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A clean, bright photo of a modern Italian fusion restaurant. Crisp white tablecloths and subtle ambient lighting create an elegant but slightly sterile environment. The focus is on a beautifully plated pasta dish, representing high-end dining but lacking the requested spicy profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHreYGwWqe3k4VfBSUfObIk816KjNiGOKVlU2V38Y0ChN0U_MuNH7FzuAiSZ2OTAvM4sEby0g2fLrEv5Le7KKaMlwDc8mUTPpvRTKRY4ZPi8YDO_SoD-2GwnxAOtp7fToZM57WqJh9yboDaRsiwCew92zeSEXrt43rq4W0qHVkFUZh7TO6yrRKM-KO2nPGSF_uFetTeq8h5JpuosrPEJ0XCBw-6g6EF0GZeZn41_c_pakbRwHSMKE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent"></div>
+<h3 class="absolute bottom-3 left-3 font-headline-md text-headline-md text-on-background font-bold drop-shadow-md">Bella Noche</h3>
+</div>
+<p class="text-on-surface-variant font-body-md text-sm line-clamp-2">Classic Italian dining with large group tables and mild flavor profiles.</p>
+</div>
+<div class="flex flex-col gap-4 w-full">
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">star</span> Rating</span>
+<span class="font-mono-data text-mono-data text-on-background">4.5</span>
+</div>
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">location_on</span> Distance</span>
+<span class="font-mono-data text-mono-data text-on-surface-variant opacity-50 italic">N/A</span>
+</div>
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">payments</span> Cost (for 2)</span>
+<span class="font-mono-data text-mono-data text-on-background">$$$$</span>
+</div>
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">restaurant</span> Cuisine</span>
+<span class="font-mono-data text-mono-data text-on-background text-right">Italian<br/><span class="text-xs text-error opacity-80">Mild</span></span>
+</div>
+<div class="flex items-center justify-between pb-2">
+<span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">deck</span> Ambience</span>
+<span class="font-mono-data text-mono-data text-on-background text-right">Formal<br/><span class="text-xs text-primary opacity-80">Family Friendly</span></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Verdict Card -->
+<div class="w-full mt-4">
+<div class="ai-gradient-bg rounded-xl p-6 md:p-8 flex flex-col md:flex-row gap-6 items-start md:items-center relative overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.3)] backdrop-blur-2xl">
+<!-- Decorative AI Ring -->
+<div class="hidden md:flex flex-shrink-0 w-24 h-24 rounded-full border-4 border-primary/30 border-t-primary animate-spin relative items-center justify-center" style="animation-duration: 4s;">
+<div class="absolute inset-0 bg-primary/10 rounded-full animate-pulse"></div>
+</div>
+<div class="flex flex-col gap-3 flex-grow z-10">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">The Verdict</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-background leading-relaxed">
+                        Based on your craving for <span class="text-tertiary-fixed-dim font-medium">spicy food</span> and a <span class="text-secondary font-medium">family setting</span>, <strong class="text-white">Omiya Sushi</strong> is your best bet today. It offers the best balance of value, authentic flavors, and comfortable seating for groups.
+                    </p>
+</div>
+<div class="flex-shrink-0 w-full md:w-auto mt-4 md:mt-0 z-10">
+<button class="w-full md:w-auto bg-primary text-on-primary font-label-caps text-label-caps px-8 py-4 rounded-lg font-bold hover:bg-primary-fixed transition-colors active:scale-95 flex items-center justify-center gap-2 group">
+                        Book Omiya Sushi
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Hidden on md/desktop) -->
+<nav class="md:hidden fixed bottom-0 w-full rounded-t-xl z-50 bg-surface-container-lowest/60 backdrop-blur-2xl border-t border-white/5 shadow-[0_-8px_32px_rgba(0,0,0,0.4)] flex justify-around items-center h-20 pb-safe px-4">
+<!-- Not showing nav items as per rule: hide shell on transactional/focused task pages (comparison implies a focused journey before booking) -->
+<div class="w-full flex justify-center items-center opacity-50 text-xs font-label-caps tracking-widest uppercase text-on-surface-variant">
+            Comparison Mode Active
+        </div>
+</nav>
+</body></html>

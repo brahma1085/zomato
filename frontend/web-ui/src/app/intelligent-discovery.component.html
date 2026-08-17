@@ -1,0 +1,88 @@
+<!-- Main Content Canvas -->
+<div class="pt-20 px-4 md:px-container-margin max-w-7xl mx-auto flex flex-col gap-section-gap pb-32">
+<!-- Hero Section -->
+<section class="relative w-full rounded-3xl overflow-hidden glass-panel-heavy mt-6 border border-white/5 shadow-[0_20px_40px_rgba(0,0,0,0.3)] min-h-[300px] flex flex-col items-center justify-center p-6 text-center">
+  <!-- Background Map Illusion -->
+  <div class="absolute inset-0 z-0 map-overlay pointer-events-none" style="background: radial-gradient(circle at 50% 0%, rgba(109, 59, 215, 0.15) 0%, rgba(11, 19, 38, 1) 70%);"></div>
+  <div class="absolute inset-0 z-0 opacity-20 pointer-events-none" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCecFx6Q8qq-ZAAUwhF6BSnvZK_NZWEB9xblGN5X4z0-AUQaQJuDVPaS0j_tkryxUbDGUtipYke2s7D4-I8vvugIk5sr--7cVgOBgLu29y_vyaQ46da84UmVmQchLdWzLhc14HseJ2OYuB2N10eCAhtlluIZbwrB2k-z--FIUKConzRWkfbw65AnBR0kzO17zQdPIvyEywOfZwjc2JxQf5Nv3JxFOplM1F1ucqcjXCQhoc1U2LxGw4')"></div>
+  
+  <div class="relative z-10 w-full max-w-2xl flex flex-col gap-6 items-center">
+    <h2 class="font-headline-md text-headline-md text-on-background max-w-[280px] md:max-w-md mx-auto">
+      Where would you like to <span class="bg-clip-text text-transparent bg-gradient-to-br from-primary to-secondary">explore</span> today?
+    </h2>
+    
+    <!-- AI Search Bar -->
+    <div class="w-full relative group">
+      <div class="absolute inset-0 bg-primary/20 rounded-full blur-xl group-hover:bg-primary/30 transition-all duration-500"></div>
+      <form (submit)="sendMessage($event)" class="relative glass-panel rounded-full flex items-center p-2 px-4 shadow-lg border border-white/10 overflow-hidden">
+        <span class="material-symbols-outlined text-primary mr-3 ai-shimmer" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+        <input 
+          [(ngModel)]="currentInput" 
+          name="queryInput"
+          class="bg-transparent border-none w-full text-on-surface focus:ring-0 placeholder:text-on-surface-variant/50 font-body-md text-body-md py-3 outline-none" 
+          placeholder="Ask AI where you want to eat..." 
+          type="text"/>
+        <button type="button" (click)="startVoiceRecognition()" [ngClass]="isListening() ? 'bg-red-500 text-white' : 'bg-primary/10 text-primary hover:bg-primary/20'" class="rounded-full w-10 h-10 flex items-center justify-center transition-colors ml-2 flex-shrink-0">
+          <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">mic</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Occasion Selector (Quick Pills) -->
+<section class="w-full flex flex-col gap-4 -mt-8">
+  <h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider px-2">Set the mood</h3>
+  <div class="flex overflow-x-auto gap-3 pb-4 px-2 no-scrollbar scroll-smooth">
+    <button (click)="sendPill('🍝 Date Night')" class="whitespace-nowrap px-6 py-3 rounded-full border border-white/10 bg-surface-container-low hover:bg-surface-bright text-on-surface font-body-md text-body-md transition-all flex items-center gap-2">
+      <span>🍝</span> Date Night
+    </button>
+    <button (click)="sendPill('👨‍👩‍👧 Family Dinner')" class="whitespace-nowrap px-6 py-3 rounded-full border border-secondary/30 bg-secondary/10 text-secondary font-body-md text-body-md transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(78,222,163,0.1)]">
+      <span>👨‍👩‍👧</span> Family Dinner
+    </button>
+    <button (click)="sendPill('🍔 Cheap Eats')" class="whitespace-nowrap px-6 py-3 rounded-full border border-white/10 bg-surface-container-low hover:bg-surface-bright text-on-surface font-body-md text-body-md transition-all flex items-center gap-2">
+      <span>🍔</span> Cheap Eats
+    </button>
+    <button (click)="sendPill('🎉 Celebration')" class="whitespace-nowrap px-6 py-3 rounded-full border border-white/10 bg-surface-container-low hover:bg-surface-bright text-on-surface font-body-md text-body-md transition-all flex items-center gap-2">
+      <span>🎉</span> Celebration
+    </button>
+    <button (click)="sendPill('💼 Business Lunch')" class="whitespace-nowrap px-6 py-3 rounded-full border border-white/10 bg-surface-container-low hover:bg-surface-bright text-on-surface font-body-md text-body-md transition-all flex items-center gap-2">
+      <span>💼</span> Business Lunch
+    </button>
+  </div>
+</section>
+
+<!-- Cravings Section (Bento Grid) -->
+<section class="w-full flex flex-col gap-6">
+  <div class="flex justify-between items-end px-2">
+    <h3 class="font-headline-md text-headline-md text-on-background">What are you craving?</h3>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-2">
+    <div (click)="sendPill('Spicy Food')" class="relative rounded-2xl overflow-hidden aspect-square group cursor-pointer border border-white/10 hover:border-primary/50 transition-colors shadow-lg">
+      <div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-transparent z-10"></div>
+      <img alt="Spicy Food" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQh0M44XL5sWNbwFZuq9TVQvzmqZafiT2QeDrkG8s1rbi4zTrob-KGSuSJCaySDffTOnA7jVwTGwdVCw3RtF5spNla6S7tb0R3y2aTkSXyaXpxNox6W3delZO9v55d5IlCv04Xr1QKKmVoHRQ3sCidcMMF38hxCC88CAQOlVPPn1739zQP8ja92v8FqSeBHhrrqOP5ajE161_1yQQC2UVjNz7ZIdlKHygQcyxzHHA-l3e3zsWGuZc"/>
+      <div class="absolute bottom-0 left-0 p-4 z-20 w-full">
+        <span class="font-label-caps text-label-caps text-error bg-error/10 px-2 py-1 rounded backdrop-blur-md mb-2 inline-block border border-error/20">Spicy</span>
+        <h4 class="font-body-lg text-body-lg text-white font-medium">Heat it up</h4>
+      </div>
+    </div>
+    <div (click)="sendPill('Comfort Food')" class="relative rounded-2xl overflow-hidden aspect-square group cursor-pointer border border-white/10 hover:border-tertiary/50 transition-colors shadow-lg">
+      <div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-transparent z-10"></div>
+      <img alt="Comfort Food" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6Fb_S_Y8ETG5WYHWBiBR_E1Vw21pt1cMAZUE0n_m9gyCpSUesVA60ZSRl9C7J54tTEJjGAYbUQdKbRpY590nJONSZvn680R0Rc0M3Utj-AFb62CbgK71_ikU81aRUZlDP1m2nabv3VdcBSXrVEamz6soFsfFI1YLFyu1oAaYGUhU3bXGKm3anJgkEqN3p71vNDP32CbPchz9_ZsAe-gZQJQwmciTKBxlX-uV_5o-wYTWeisIAQnc"/>
+      <div class="absolute bottom-0 left-0 p-4 z-20 w-full">
+        <span class="font-label-caps text-label-caps text-tertiary bg-tertiary/10 px-2 py-1 rounded backdrop-blur-md mb-2 inline-block border border-tertiary/20">Comfort</span>
+        <h4 class="font-body-lg text-body-lg text-white font-medium">Soul Food</h4>
+      </div>
+    </div>
+    <div (click)="sendPill('Street Food')" class="relative rounded-2xl overflow-hidden aspect-square group cursor-pointer border border-white/10 hover:border-secondary/50 transition-colors shadow-lg col-span-2 md:col-span-1">
+      <div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-transparent z-10"></div>
+      <img alt="Street Food" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzoM9HskXaDmhok_KxUIbcyvoN-SSVvWIlCywxXY5-9n5fMQmQzQygxdY6pWnmKbiz-aEJX_QbEMDem6GnlDcrHM1sTFVvXiqKbfnRZo7J166JymM0F_IQ9dCTCCphmzu764y8Fjsdpic9UvnqxhgT4v4bgGibyE03n5QGNQRkwQ0sUVUz0pXG5Stg11imQvJW3KHuaY0ZZtn5AiojZdNqyh7TZELqUyuO55eUARNPRmC6lFZ8eGY"/>
+      <div class="absolute bottom-0 left-0 p-4 z-20 w-full">
+        <span class="font-label-caps text-label-caps text-secondary bg-secondary/10 px-2 py-1 rounded backdrop-blur-md mb-2 inline-block border border-secondary/20">Casual</span>
+        <h4 class="font-body-lg text-body-lg text-white font-medium">Street Bites</h4>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>

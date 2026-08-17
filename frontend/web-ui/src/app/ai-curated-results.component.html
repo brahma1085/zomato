@@ -1,0 +1,124 @@
+<div class="flex-grow flex w-full max-w-7xl mx-auto h-[calc(100vh-4rem)] pt-16">
+  <!-- List View Area -->
+  <div class="w-full md:w-3/5 lg:w-1/2 p-container-margin flex flex-col gap-section-gap overflow-y-auto">
+    <!-- Top Sticky Search Area inside the list view -->
+    <div class="sticky top-0 z-40 bg-background/90 backdrop-blur-md pb-4 pt-2">
+      <div class="relative w-full">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <span class="material-symbols-outlined text-primary/70">auto_awesome</span>
+        </div>
+        <input 
+          class="block w-full pl-10 pr-3 py-3 border border-white/10 rounded-xl leading-5 bg-white/5 text-on-background placeholder-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary focus:bg-white/10 sm:text-sm transition-colors shadow-inner" 
+          placeholder="Search AI..." 
+          type="text" 
+          [value]="query()" 
+          (keyup.enter)="fetchResults($any($event.target).value)" />
+        <div class="absolute inset-0 rounded-xl pointer-events-none ai-shimmer opacity-20"></div>
+      </div>
+    </div>
+
+    @if (isThinking()) {
+      <div class="flex flex-col items-center justify-center h-64 gap-4">
+        <svg class="animate-spin h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p class="text-on-surface-variant font-mono text-sm animate-pulse">Curating your personalized recommendations...</p>
+      </div>
+    } @else {
+      @if (chatMessage()) {
+        <div class="bg-primary-container/10 border border-primary/20 rounded-xl p-4 text-on-surface">
+          <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-primary">auto_awesome</span>
+            <p class="text-sm font-body leading-relaxed">{{chatMessage()}}</p>
+          </div>
+        </div>
+      }
+
+      <!-- Results List -->
+      <section class="flex flex-col gap-gutter">
+        @for (restaurant of restaurants(); track restaurant.id) {
+          <!-- Restaurant Card -->
+          <div [routerLink]="['/restaurant', restaurant.id]" [state]="{ restaurant: restaurant }" class="glass-card rounded-xl overflow-hidden group relative p-4 flex flex-col gap-4 cursor-pointer hover:bg-white/5 transition-colors">
+            
+            <!-- Checkbox Overlay for Compare -->
+            <div class="absolute top-6 left-6 z-10" (click)="$event.stopPropagation()">
+              <input 
+                class="w-6 h-6 rounded border-white/20 bg-background/50 text-secondary focus:ring-secondary/50 focus:ring-offset-background cursor-pointer backdrop-blur-sm" 
+                type="checkbox"
+                [checked]="selectedForCompare().has(restaurant.id)"
+                (change)="toggleCompare(restaurant.id, $event)"/>
+            </div>
+
+            <!-- Image -->
+            <div class="relative h-48 rounded-lg overflow-hidden shrink-0">
+              <img [src]="restaurant.imageUrl || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500&auto=format&fit=crop'" 
+                   alt="{{restaurant.name || restaurant.restaurantName}}" 
+                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent"></div>
+              <!-- Badges -->
+              <div class="absolute bottom-3 left-3 flex gap-2">
+                @if (restaurant.attributes?.includes('parking')) {
+                  <span class="bg-surface-container-highest/80 backdrop-blur text-on-surface text-xs font-medium px-2 py-1 rounded-md border border-white/10 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">directions_car</span> Parking
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="flex flex-col gap-2 flex-grow">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="font-headline-md text-lg text-on-surface m-0 leading-tight">{{restaurant.name || restaurant.restaurantName}}</h3>
+                  <div class="flex items-center gap-2 text-on-surface-variant font-mono-data text-mono-data mt-1">
+                    <span>{{restaurant.rating | number:'1.1-1'}}</span>
+                    <span class="material-symbols-outlined text-tertiary text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                    <span class="text-white/20">•</span>
+                    <span>{{restaurant.priceRange}}</span>
+                    <span class="text-white/20">•</span>
+                    <span>{{restaurant.cuisineType}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI Match Block -->
+              <div class="mt-2 bg-surface-container/50 rounded-lg p-3 border border-white/5 flex gap-4 items-center">
+                <div class="match-ring" [style.--percent]="(restaurant.matchScore || 85) + '%'">
+                  <span class="font-mono-data text-secondary text-sm font-bold z-10 shadow-sm">{{restaurant.matchScore || 85}}%</span>
+                </div>
+                <p class="text-sm text-on-surface-variant leading-snug">
+                  <span class="text-on-surface font-medium">Why it's a match:</span> {{restaurant.matchReason || 'Great fit based on your preferences.'}}
+                </p>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="text-center py-10 text-on-surface-variant">
+            No restaurants found matching your criteria. Try adjusting your search.
+          </div>
+        }
+      </section>
+
+      <div class="h-24"></div> <!-- Bottom padding for FAB and Nav -->
+    }
+  </div>
+
+  <!-- Map View Area (Hidden on mobile by default, shown on desktop) -->
+  <div class="hidden md:block md:w-2/5 lg:w-1/2 relative bg-surface-container-lowest border-l border-white/5">
+    <app-map class="absolute inset-0 z-0" [markers]="mapMarkers()" [centerLocation]="locationService.currentLocation()"></app-map>
+  </div>
+</div>
+
+<!-- Floating Action Button (Compare) -->
+@if (selectedForCompare().size > 0) {
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 transition-transform hover:scale-105 active:scale-95">
+  <button 
+    [routerLink]="['/compare']" 
+    [queryParams]="{ids: compareIdsQuery}"
+    class="ai-glow-btn px-6 py-3 rounded-full flex items-center gap-2 text-on-primary font-headline-md text-sm font-bold shadow-2xl bg-primary">
+    <span class="material-symbols-outlined text-[20px]">compare_arrows</span>
+    Compare Selected ({{selectedForCompare().size}})
+  </button>
+</div>
+}

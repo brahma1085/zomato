@@ -1,0 +1,144 @@
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-primary/10 transition-transform h-16">
+  <div class="flex justify-between items-center px-container-margin h-full w-full max-w-7xl mx-auto">
+    <button routerLink="/results" [queryParamsHandling]="'preserve'" class="text-on-surface-variant hover:text-primary active:scale-95 transition-all p-2 -ml-2 rounded-full hover:bg-white/5 flex items-center justify-center">
+      <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+    </button>
+    <h1 class="font-headline-md text-headline-md text-primary tracking-tight truncate px-4">Epicure AI Comparison</h1>
+    <button class="text-on-surface-variant hover:opacity-80 active:scale-95 transition-all w-8 h-8 rounded-full overflow-hidden border border-white/10 bg-surface-bright flex items-center justify-center font-bold text-primary">
+      U
+    </button>
+  </div>
+</header>
+
+<!-- Main Content -->
+<main class="flex-grow pt-24 pb-32 px-container-margin md:px-8 w-full max-w-7xl mx-auto flex flex-col gap-section-gap min-h-screen">
+  
+  @if (isLoading()) {
+    <div class="flex flex-col items-center justify-center h-64 gap-4 w-full">
+      <svg class="animate-spin h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <p class="text-on-surface-variant font-mono text-sm animate-pulse">Analyzing venues...</p>
+    </div>
+  } @else {
+    <!-- Header & Context -->
+    <div class="flex flex-col gap-4 text-center max-w-2xl mx-auto">
+      <h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg font-bold text-on-background tracking-tight">
+          Evaluating your options
+      </h2>
+      <p class="font-body-lg text-body-lg text-on-surface-variant/80">
+          Analyzing {{restaurants().length}} selected venues based on your preferences.
+      </p>
+    </div>
+
+    <!-- Comparison Matrix (Horizontal Scroll) -->
+    <div class="w-full overflow-x-auto no-scrollbar pb-8 -mx-container-margin px-container-margin md:mx-0 md:px-0">
+      <div class="flex gap-6 min-w-max">
+        
+        @for (restaurant of restaurants(); track restaurant.id) {
+          <div class="glass-card rounded-xl p-6 flex flex-col gap-6 w-72 md:w-80 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300"
+               [ngClass]="{'opacity-100': restaurant.id === topPick()?.id, 'opacity-70 hover:opacity-100': restaurant.id !== topPick()?.id}">
+            
+            <!-- Winner Badge -->
+            @if (restaurant.id === topPick()?.id) {
+              <div class="absolute top-0 right-0 bg-secondary text-on-secondary font-label-caps text-label-caps px-3 py-1 rounded-bl-lg font-bold z-10 shadow-lg">
+                  AI TOP PICK
+              </div>
+            }
+
+            <div class="flex flex-col gap-4">
+              <div class="h-40 rounded-lg overflow-hidden relative">
+                <img [src]="restaurant.image" 
+                     [alt]="restaurant.name" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent"></div>
+                <h3 class="absolute bottom-3 left-3 font-headline-md text-headline-md text-on-background font-bold drop-shadow-md">{{restaurant.name}}</h3>
+              </div>
+            </div>
+            
+            <div class="flex flex-col gap-4 w-full">
+              <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                <span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">star</span> Rating</span>
+                <span class="font-mono-data text-mono-data text-secondary font-bold">{{restaurant.rating}}</span>
+              </div>
+              <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                <span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">location_on</span> Distance</span>
+                <span class="font-mono-data text-mono-data text-on-background">{{restaurant.distance}}</span>
+              </div>
+              <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                <span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">payments</span> Cost</span>
+                <span class="font-mono-data text-mono-data text-on-background">{{restaurant.price}}</span>
+              </div>
+              <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                <span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">restaurant</span> Cuisine</span>
+                <span class="font-mono-data text-mono-data text-on-background text-right">{{restaurant.cuisine}}</span>
+              </div>
+              <div class="flex items-center justify-between pb-2">
+                <span class="flex items-center gap-2 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-[18px]">deck</span> Ambience</span>
+                <span class="font-mono-data text-mono-data text-on-background text-right">{{restaurant.vibe}}</span>
+              </div>
+              <button [routerLink]="['/restaurant', restaurant.id]" class="mt-2 w-full py-2 bg-white/10 hover:bg-white/20 text-on-background rounded-lg transition-colors font-medium text-sm">
+                View Details
+              </button>
+            </div>
+          </div>
+        }
+
+      </div>
+    </div>
+
+    <!-- AI Verdict Card -->
+    @if (topPick()) {
+    <div class="w-full mt-4">
+      <div class="ai-gradient-bg rounded-xl p-6 md:p-8 flex flex-col md:flex-row gap-6 items-start md:items-center relative overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.3)] backdrop-blur-2xl">
+        <!-- Decorative AI Ring -->
+        <div class="hidden md:flex flex-shrink-0 w-24 h-24 rounded-full border-4 border-primary/30 border-t-primary animate-spin relative items-center justify-center" style="animation-duration: 4s;">
+          <div class="absolute inset-0 bg-primary/10 rounded-full animate-pulse"></div>
+        </div>
+        <div class="flex flex-col gap-3 flex-grow z-10">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+            <span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">The Verdict</span>
+          </div>
+          <p class="font-body-lg text-body-lg text-on-background leading-relaxed">
+            Based on your criteria, <strong class="text-white">{{topPick()?.name}}</strong> is your best bet today. It offers the best balance of value, authentic flavors, and comfortable setting.
+          </p>
+        </div>
+        <div class="flex-shrink-0 w-full md:w-auto mt-4 md:mt-0 z-10">
+          <button [routerLink]="['/restaurant', topPick()?.id]" class="w-full md:w-auto bg-primary text-on-primary font-label-caps text-label-caps px-8 py-4 rounded-lg font-bold hover:bg-primary-fixed transition-colors active:scale-95 flex items-center justify-center gap-2 group">
+            Book {{topPick()?.name}}
+            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform text-[18px]">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    }
+  }
+</main>
+<style>
+.ai-gradient-bg {
+    background: linear-gradient(135deg, rgba(208, 188, 255, 0.15) 0%, rgba(78, 222, 163, 0.15) 100%);
+    position: relative;
+}
+.ai-gradient-bg::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(208, 188, 255, 0.5) 0%, rgba(78, 222, 163, 0.5) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+</style>

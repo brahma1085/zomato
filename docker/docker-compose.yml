@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # PostgreSQL with pgvector extension for standard relational data and vector embeddings
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: zomato-postgres
+    environment:
+      POSTGRES_DB: zomatodb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  # Elasticsearch for fast text/location filtering
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    container_name: zomato-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    restart: unless-stopped
+
+  # Redis for session management and caching
+  redis:
+    image: redis:7-alpine
+    container_name: zomato-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  # Keycloak for Identity and Access Management (OAuth2/JWT)
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.4
+    container_name: zomato-keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      # Configure DB connection to our Postgres container
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/zomatodb
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: adminpassword
+    command: start-dev
+    ports:
+      - "9090:8080"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  elasticsearch_data:
+  redis_data:

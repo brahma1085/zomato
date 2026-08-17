@@ -1,0 +1,21 @@
+server:
+  port: 8086
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: ai-service
+  ai:
+    openai:
+      # Using Groq's free OpenAI-compatible endpoint!
+      base-url: https://api.groq.com/openai
+      api-key: ${GROQ_API_KEY}
+      chat:
+        options:
+          model: openai/gpt-oss-20b
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

@@ -1,0 +1,41 @@
+server:
+  port: 8087
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: recommendation-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/zomatodb
+    username: admin
+    password: adminpassword
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  ai:
+    retry:
+      max-attempts: 1
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 384
+    openai:
+      # Using Groq's free OpenAI-compatible endpoint!
+      base-url: https://api.groq.com/openai
+      api-key: ${GROQ_API_KEY}
+      chat:
+        options:
+          model: openai/gpt-oss-20b
+      embedding:
+        enabled: false
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

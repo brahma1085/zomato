@@ -1,0 +1,1224 @@
+AI-POWERED RESTAURANT RECOMMENDATION SYSTEM
+================================================
+
+Project Name:
+AI-Powered Intelligent Restaurant Recommendation & Discovery Platform
+
+1. PROBLEM STATEMENT
+--------------------
+
+Business Problem
+
+Existing restaurant discovery platforms such as Zomato primarily allow users to search and filter restaurants based on predefined parameters such as:
+
+- Location
+- Cuisine
+- Restaurant name
+- Rating
+- Price range
+- Offers
+- Delivery availability
+- Distance
+
+However, users often struggle to answer a more natural question:
+
+"Where should I eat today?"
+
+A user may have a vague requirement such as:
+
+"I want a good South Indian restaurant near me, under Rs.500 for two, highly rated, suitable for a family dinner, and preferably somewhere my friends have liked."
+
+Traditional search systems require the user to manually apply multiple filters and compare dozens of restaurants.
+
+Proposed Solution
+
+Build an AI-powered restaurant recommendation platform that understands the user's natural-language intent, preferences, location, budget, food preferences, dining context, ratings, reviews, social preferences, and historical behavior to recommend the most relevant restaurants rather than simply returning search results.
+
+The system should act as an intelligent Restaurant Recommendation Agent that can:
+
+1. Understand what the user wants.
+2. Identify relevant restaurants.
+3. Apply location and distance constraints.
+4. Consider budget.
+5. Analyze ratings and reviews.
+6. Understand cuisine and food preferences.
+7. Consider the user's previous choices.
+8. Consider friends' recommendations.
+9. Rank restaurants intelligently.
+10. Explain why each restaurant was recommended.
+11. Adapt recommendations based on feedback.
+
+
+2. VISION
+---------
+
+The ultimate goal is to move from:
+
+"Search for restaurants"
+
+to:
+
+"Tell the AI what you're looking for, and let it decide the best restaurants for you."
+
+Example:
+
+User:
+"I want to take my family for dinner tonight. Somewhere within 5 km, preferably South Indian or North Indian, budget around Rs.1,500 for four people. It should have at least 4.2 rating, good reviews, parking, and shouldn't be too crowded."
+
+AI Response:
+
+Best Match: Restaurant A — 94% Match
+
+Rating: 4.5
+Distance: 2.8 km
+Estimated cost: Rs.1,350 for 4
+Cuisine: South Indian + North Indian
+Family Friendly
+Parking Available
+Recommended by 2 of your friends
+
+Why we recommend it:
+"Excellent family reviews, within your budget, close to your location, and two of your friends have rated it positively."
+
+
+3. PRIMARY USER INPUTS
+----------------------
+
+The system should support both structured search and natural-language search.
+
+A. Structured Search Inputs
+
+- Location
+- Current GPS Location
+- Search Radius: 1 km / 2 km / 5 km / 10 km / 20 km
+- Cuisine
+- Specific Food
+- Budget
+- Number of People
+- Minimum Rating
+- Maximum Distance
+- Dining Type
+- Restaurant Type
+- Meal
+- Vegetarian
+- Vegan
+- Jain
+- Gluten Free
+- Parking Required
+- Delivery Required
+- Takeaway Required
+- Ambience
+- Occasion
+
+
+4. NATURAL LANGUAGE SEARCH
+--------------------------
+
+This should be one of the main differentiators.
+
+Provide:
+
+"Ask AI where you want to eat"
+
+Examples:
+
+- "Find me the best biryani within 5 km."
+- "I want a good family restaurant under Rs.1,000."
+- "Suggest a romantic restaurant for tonight."
+- "Where can I get good dosa near me?"
+- "Find restaurants similar to Paradise."
+- "I want something different from what I normally eat."
+- "My friends are visiting Hyderabad. Suggest a good place for dinner."
+- "Find the best restaurant within Rs.2,000 for four people."
+
+The AI converts the natural-language request into structured search criteria.
+
+Example:
+
+User Query
+    |
+    v
+AI Intent Understanding
+    |
+    v
+Extract Search Criteria
+    |
+    +-- Location
+    +-- Cuisine
+    +-- Budget
+    +-- Party Size
+    +-- Rating
+    +-- Dining Context
+    +-- Preferences
+    |
+    v
+Restaurant Search
+    |
+    v
+AI Ranking
+    |
+    v
+Personalized Recommendations
+
+
+5. LOCATION INTELLIGENCE
+------------------------
+
+Location should be a first-class feature.
+
+Supported location scenarios:
+
+- Current Location
+- Selected Location
+- Landmark
+- Area
+- Radius
+- Travel Distance
+- Estimated Travel Time
+
+Example:
+
+Restaurant A
+- 2.1 km away
+- 8 min drive
+- 12 min walk
+- 6 min by bike
+
+The system should distinguish geographical distance from practical travel time.
+
+
+6. BUDGET INTELLIGENCE
+----------------------
+
+Instead of simply using price symbols, calculate estimated dining cost.
+
+Example:
+
+4 people
+Budget = Rs.2,000
+
+Food:               Rs.1,550
+Taxes:              Rs.180
+Estimated Total:    Rs.1,730
+Budget Remaining:   Rs.270
+
+Result classification:
+
+- Within Budget
+- Slightly Above Budget
+- Over Budget
+
+The AI can also explain trade-offs:
+
+"Restaurant B is rated slightly lower, but it is Rs.600 cheaper and better fits your budget."
+
+
+7. RATING INTELLIGENCE
+----------------------
+
+Do not rank restaurants purely by rating.
+
+Example:
+
+Restaurant A:
+5.0 rating from 8 reviews
+
+Restaurant B:
+4.6 rating from 8,000 reviews
+
+The recommendation engine should consider:
+
+- Overall Rating
+- Review Count
+- Recent Reviews
+- Cuisine Rating
+- Food Quality
+- Service
+- Ambience
+- Value for Money
+- Cleanliness
+- Consistency
+
+Example AI Restaurant Score:
+
+Overall Match:        94%
+Food Quality:         96%
+Value for Money:      91%
+Location:             95%
+Rating:               93%
+User Preference Match:97%
+
+
+8. REVIEW INTELLIGENCE
+----------------------
+
+This can become one of the strongest AI components.
+
+Instead of showing thousands of reviews, the AI summarizes them.
+
+What people love:
+
+- Excellent biryani
+- Fast service
+- Good portion size
+- Family-friendly
+- Good ambience
+
+Common complaints:
+
+- Parking is difficult
+- Weekend waiting time
+- Slightly expensive
+
+AI Summary:
+
+"Customers consistently praise the biryani, portion sizes and service. Parking and weekend waiting times are the most common complaints."
+
+
+9. CUISINE / FOOD RECOMMENDATION
+--------------------------------
+
+Cuisine categories:
+
+- Indian
+- South Indian
+- North Indian
+- Chinese
+- Thai
+- Italian
+- Mexican
+- Japanese
+- Korean
+- Continental
+- Arabic
+- Mediterranean
+
+Specific food:
+
+- Biryani
+- Dosa
+- Idly
+- Pizza
+- Burger
+- Shawarma
+- Noodles
+- Fried Rice
+- Pasta
+- Thali
+- Ice Cream
+- Desserts
+
+Preferences:
+
+- Spicy
+- Mild
+- Healthy
+- High Protein
+- Low Calorie
+- Vegetarian
+- Vegan
+- Gluten Free
+- Jain
+
+
+10. "WHAT ARE YOU CRAVING?" FEATURE
+-----------------------------------
+
+Instead of asking only "Select Cuisine", ask:
+
+"What are you craving today?"
+
+Examples:
+
+- Something spicy
+- Something light
+- Something sweet
+- Comfort food
+- Something healthy
+- Street food
+- Something I have never tried
+
+Example:
+
+User:
+"Something spicy."
+
+AI:
+
+Spicy Food Recommendations
+
+1. Restaurant A
+   Famous for spicy biryani
+
+2. Restaurant B
+   Spicy Andhra meals
+
+3. Restaurant C
+   Telangana-style spicy dishes
+
+
+11. OCCASION-BASED RECOMMENDATIONS
+----------------------------------
+
+Supported occasions:
+
+- Family Dinner
+- Date Night
+- Friends
+- Birthday
+- Business Lunch
+- Party
+- Celebration
+- Casual Dinner
+- Tourist
+- Family with Kids
+
+For Date Night prioritize:
+
+- Romantic ambience
+- Privacy
+- Music
+- Lighting
+- Fine dining
+- Reviews mentioning couples
+
+For Family prioritize:
+
+- Family friendly
+- Kids friendly
+- Seating
+- Parking
+- Noise level
+- Value for money
+
+
+12. FRIEND / SOCIAL RECOMMENDATIONS
+-----------------------------------
+
+Feature:
+
+"What do my friends recommend?"
+
+Examples:
+
+- "3 of your friends liked this restaurant."
+- "Rahul visited this restaurant 4 times."
+- "2 friends recommend the biryani here."
+
+Possible Social Score:
+
+Friend Recommendation:    95%
+Personal Preference:      92%
+Overall Rating:           90%
+
+
+13. PERSONALIZED RECOMMENDATION ENGINE
+-------------------------------------
+
+The system should learn from user behavior.
+
+Example preference profile:
+
+South Indian:       87%
+Biryani:            72%
+Vegetarian:         65%
+Family Dining:      82%
+Budget Friendly:    91%
+Fine Dining:        25%
+
+The system should progressively improve recommendations based on:
+
+- Previous searches
+- Restaurant visits
+- Orders
+- Ratings
+- Favorites
+- Rejections
+- Food preferences
+- Budget patterns
+- Dining occasions
+
+
+14. "BECAUSE YOU LIKE..." RECOMMENDATIONS
+-----------------------------------------
+
+Example:
+
+"Because you liked Meghana Foods"
+
+AI recommends:
+
+- Restaurant A: Similar biryani style
+- Restaurant B: Similar price range
+- Restaurant C: Similar customer reviews
+
+This can be implemented using semantic similarity and embeddings.
+
+
+15. "TRY SOMETHING NEW"
+-----------------------
+
+The AI can intentionally recommend restaurants or cuisines outside the user's normal behavior.
+
+Example:
+
+User usually eats:
+
+- Biryani
+- Dosa
+- Pizza
+
+AI:
+
+"You usually choose Indian and Italian food. Here are three highly-rated Japanese restaurants you haven't tried yet."
+
+
+16. RESTAURANT COMPARISON
+-------------------------
+
+Allow users to compare 2-4 restaurants.
+
+Comparison fields:
+
+- Rating
+- Distance
+- Cost for 2
+- Cuisine
+- Ambience
+- Family friendliness
+- Parking
+- Delivery
+- Review sentiment
+- User preference match
+
+Example:
+
+Restaurant A:
+Rating: 4.5
+Distance: 2 km
+Cost for 2: Rs.700
+Cuisine: Indian
+Ambience: 4/5
+Family: Yes
+Parking: Yes
+
+Restaurant B:
+Rating: 4.3
+Distance: 3.5 km
+Cost for 2: Rs.900
+Cuisine: Indian
+Ambience: 5/5
+Family: Yes
+Parking: No
+
+AI should provide a final recommendation:
+
+"For your requirements, I recommend Restaurant A because it offers the best combination of price, distance and rating."
+
+
+17. RESTAURANT DETAIL PAGE
+--------------------------
+
+Each restaurant should have a rich AI-powered page.
+
+Header:
+
+Restaurant Name
+Rating
+Distance
+Price Range
+
+AI Recommendation:
+
+"92% Match for You"
+
+Why?
+
+- Within your budget
+- 2.3 km from you
+- Highly rated biryani
+- Family friendly
+- Your friend recommends it
+
+AI Review Summary:
+
+Customers love:
+- Food quality
+- Portion size
+- Service
+
+Common complaints:
+- Parking
+- Weekend waiting
+
+Best Dishes:
+
+1. Chicken Biryani — 4.7
+2. Mutton Biryani — 4.6
+3. Double Ka Meetha — 4.5
+
+
+18. "WHAT SHOULD I ORDER?" AI
+----------------------------
+
+User:
+
+"I'm visiting this restaurant for the first time. What should I order?"
+
+AI:
+
+Based on customer reviews and your preferences:
+
+1. Chicken Biryani
+2. Mutton Biryani
+3. Double Ka Meetha
+
+"Since you prefer spicy food, I'd recommend the Chicken Biryani."
+
+
+19. GROUP RECOMMENDATION
+------------------------
+
+This is an advanced feature.
+
+Example group:
+
+Person A:
+Vegetarian
+
+Person B:
+Biryani
+
+Person C:
+Chinese
+
+Person D:
+Budget Rs.2,000
+
+The AI finds the restaurant that maximizes group satisfaction.
+
+Example:
+
+Restaurant X — 91% Group Match
+
+- Vegetarian options: Yes
+- Biryani: Yes
+- Chinese options: Yes
+- Budget: Yes
+- Distance: Yes
+- Rating: 4.5
+
+
+20. SEARCH RESULTS PAGE
+-----------------------
+
+Recommended structure:
+
+Location:
+Near Gachibowli, Hyderabad
+
+Search:
+
+"What are you looking for?"
+
+[ Ask AI: Find a good family restaurant... ]
+
+Filters:
+
+Cuisine | Budget | Rating | Distance | Occasion
+
+AI Picks:
+
+- Best Overall Match
+- Best Biryani
+- Best Budget Option
+- Best Family Restaurant
+- Best Date Night
+- Most Recommended by Friends
+- Highest Rated
+- Trending Nearby
+
+
+21. SMART RANKING ALGORITHM
+---------------------------
+
+Possible recommendation score:
+
+Final Recommendation Score =
+
+Location Score
++ Budget Score
++ Rating Score
++ Cuisine Match
++ User Preference Match
++ Review Sentiment
++ Friend Recommendation
++ Occasion Match
++ Availability
++ Popularity
++ Recency
+
+Example initial weights:
+
+Location:               15%
+Budget:                 15%
+Cuisine:                15%
+User Preference:        20%
+Rating:                 10%
+Reviews:                10%
+Friends:                 5%
+Occasion:                5%
+Popularity:              5%
+
+These weights can eventually be dynamically adjusted based on user behavior.
+
+
+22. CONVERSATIONAL SEARCH
+-------------------------
+
+The user should be able to refine results without restarting the search.
+
+User:
+"Find good restaurants near me."
+
+AI:
+"Here are the top 10."
+
+User:
+"Only vegetarian."
+
+AI:
+"I've filtered the results to vegetarian restaurants."
+
+User:
+"Under Rs.800 for two."
+
+AI:
+"Here are the best options within your budget."
+
+User:
+"Which one has the best ambience?"
+
+AI:
+"Restaurant B has the strongest ambience ratings."
+
+User:
+"Is parking available?"
+
+AI:
+"Yes, Restaurant B has parking according to the available information."
+
+This makes the system a conversation rather than a static search form.
+
+
+23. VOICE SEARCH
+----------------
+
+Eventually support:
+
+"Find me a good family restaurant near me under Rs.1,500."
+
+Flow:
+
+Speech
+  |
+  v
+Speech-to-Text
+  |
+  v
+AI Intent
+  |
+  v
+Restaurant Search
+  |
+  v
+Recommendation
+
+
+24. USER FEEDBACK LOOP
+----------------------
+
+After visiting:
+
+"How was your experience?"
+
+User:
+5 stars
+
+Comment:
+"The biryani was excellent but service was slow."
+
+AI learns:
+
+Restaurant Food = Positive
+Restaurant Service = Negative
+
+This feedback can improve future recommendations.
+
+
+25. "NOT INTERESTED" LEARNING
+-----------------------------
+
+If the user repeatedly rejects fine dining, the system should stop over-recommending it.
+
+Allow:
+
+"Don't show me this type again."
+
+Possible reasons:
+
+- Too expensive
+- Too far
+- Bad reviews
+- Don't like cuisine
+- Already visited
+- Not family friendly
+
+This improves personalization.
+
+
+26. HOME PAGE DESIGN
+--------------------
+
+Suggested structure:
+
+--------------------------------------------------
+                    FoodAI
+        Intelligent Restaurant Discovery
+--------------------------------------------------
+
+Location:
+Gachibowli, Hyderabad
+
+What are you craving?
+
+[ Ask AI: "Find a good family restaurant..." ]
+
+[ Voice Search ]
+
+--------------------------------------------------
+
+AI Recommendations
+
+- Best Match For You
+- Best Biryani
+- Best Under Rs.500
+- Best Family Restaurant
+- Best Date Night
+- Recommended By Friends
+- Try Something New
+
+--------------------------------------------------
+
+Restaurants Near You
+
+Restaurant Cards...
+
+--------------------------------------------------
+
+Based On Your Preferences
+
+...
+
+--------------------------------------------------
+
+Trending Near You
+
+...
+
+
+27. RESTAURANT CARD
+-------------------
+
+Restaurant Name
+Rating
+Price
+Distance
+
+Cuisine
+
+Estimated Cost
+
+Parking
+Family Friendly
+
+AI Match Percentage
+
+Example:
+
+"94% Match For You"
+
+"Great match because you like spicy food and prefer budget dining."
+
+Actions:
+
+- View Restaurant
+- Directions
+- Favorite
+- Compare
+- Ask AI
+
+
+28. AI ARCHITECTURE
+-------------------
+
+Suggested high-level architecture:
+
+                         USER
+                           |
+                           v
+                 +------------------+
+                 | AI Conversation  |
+                 | Agent            |
+                 +--------+---------+
+                          |
+                          v
+                 +------------------+
+                 | Intent / Query    |
+                 | Understanding     |
+                 +--------+---------+
+                          |
+        +-----------------+-----------------+
+        |                 |                 |
+        v                 v                 v
+  Location Agent   Preference Agent   Budget Agent
+        |                 |                 |
+        +-----------------+-----------------+
+                          |
+                          v
+                 +------------------+
+                 | Restaurant Search|
+                 | Agent            |
+                 +--------+---------+
+                          |
+              +-----------+-----------+
+              |           |           |
+              v           v           v
+         Restaurant    Review      Social
+          Database     Analysis     Data
+              |           |           |
+              +-----------+-----------+
+                          |
+                          v
+                 +------------------+
+                 | Recommendation   |
+                 | Agent            |
+                 +--------+---------+
+                          |
+                          v
+                 +------------------+
+                 | Ranking / Scoring|
+                 +--------+---------+
+                          |
+                          v
+                 +------------------+
+                 | Explanation Agent|
+                 +--------+---------+
+                          |
+                          v
+                    USER RESULTS
+
+
+29. POTENTIAL AI AGENTS
+-----------------------
+
+1. Conversation Agent
+   Understands natural-language requests.
+
+2. Intent Agent
+   Converts requests into structured search criteria.
+
+3. Location Agent
+   Finds coordinates, restaurants, distance and travel time.
+
+4. Restaurant Search Agent
+   Queries restaurant databases/APIs.
+
+5. Review Analysis Agent
+   Analyzes reviews and extracts food quality, service, ambience,
+   cleanliness, complaints and popular dishes.
+
+6. Personalization Agent
+   Uses previous orders, likes, dislikes, search history and ratings.
+
+7. Social Recommendation Agent
+   Analyzes friends and shared preferences.
+
+8. Recommendation Agent
+   Combines all signals.
+
+9. Ranking Agent
+   Produces ranked results.
+
+10. Explanation Agent
+    Explains why each restaurant was recommended.
+
+
+30. BACKEND COMPONENTS
+----------------------
+
+Frontend:
+- Angular or React
+
+Backend:
+- Java 21
+- Spring Boot 3.x
+
+Microservices:
+
+- user-service
+- restaurant-service
+- search-service
+- review-service
+- recommendation-service
+- location-service
+- ai-service
+
+AI Layer:
+
+- AI Orchestrator
+- LLM
+- Embedding Model
+- Vector Database
+- RAG
+- Recommendation Engine
+- Agent Tools
+
+Data:
+
+- PostgreSQL / MySQL
+- Redis
+- Vector Database
+- Restaurant API
+- Maps / Location API
+
+Authentication:
+
+- Keycloak
+- OAuth2
+- JWT
+
+
+31. RECOMMENDED TECHNOLOGY STACK
+--------------------------------
+
+Frontend:
+Angular
+
+Backend:
+Java 21 + Spring Boot 3.x
+
+AI:
+OpenAI / Claude / Gemini
+
+Java AI Framework:
+Spring AI
+
+Database:
+PostgreSQL + pgvector
+
+Cache:
+Redis
+
+Search:
+Elasticsearch / OpenSearch
+
+Maps:
+Google Maps / Mapbox / OpenStreetMap-based services
+
+Authentication:
+Keycloak / OAuth2 / JWT
+
+Infrastructure:
+AWS
+
+Containerization:
+Docker
+
+CI/CD:
+Jenkins / GitHub Actions
+
+
+32. DEVELOPMENT PHASES
+----------------------
+
+PHASE 1 — INTELLIGENT RESTAURANT SEARCH
+
+Build:
+
+User
+  |
+  v
+Natural Language Query
+  |
+  v
+AI Intent Extraction
+  |
+  v
+Restaurant Search
+  |
+  v
+Location + Budget + Rating
+  |
+  v
+AI Ranking
+  |
+  v
+Recommendations
+
+Features:
+
+- Location
+- Cuisine
+- Budget
+- Rating
+- Distance
+- Natural-language search
+- Restaurant cards
+- AI explanation
+
+
+PHASE 2 — PERSONALIZATION
+
+Add:
+
+- User profile
+- Search history
+- Favorite restaurants
+- Favorite food
+- Previous visits
+- Personalized recommendations
+- Review summarization
+- "Because you liked..."
+- "Try something new"
+
+
+PHASE 3 — AGENTIC AI
+
+Add:
+
+- Multiple AI agents
+- Friend recommendations
+- Group recommendations
+- Conversational refinement
+- Voice search
+- Restaurant comparison
+- "What should I order?"
+- Dynamic planning
+- Booking integration
+- Feedback learning
+
+
+33. KILLER FEATURE — AI RESTAURANT CONCIERGE
+--------------------------------------------
+
+The centerpiece of the project should be an AI Restaurant Concierge.
+
+Instead of:
+
+Search -> Filter -> Compare -> Decide
+
+the user says:
+
+"I'm taking my parents for dinner tonight. Find a quiet South Indian restaurant within 5 km, around Rs.1,500 for four people, with good parking and at least 4.3 rating. My father likes spicy food but my mother prefers vegetarian food."
+
+The AI should autonomously:
+
+1. Understand Request
+2. Determine Location
+3. Determine Date/Time
+4. Determine Party Size
+5. Determine Budget
+6. Determine Cuisine
+7. Determine Dietary Preferences
+8. Search Restaurants
+9. Analyze Reviews
+10. Check Parking
+11. Rank Restaurants
+12. Explain Recommendations
+13. Offer Top 3
+14. Ask User to Choose
+
+Example:
+
+"I've found 3 strong options. Restaurant A is my top recommendation because it best matches your parents' preferences and your budget."
+
+
+34. FINAL PRODUCT DEFINITION
+----------------------------
+
+An AI-powered restaurant discovery and recommendation platform that combines natural-language understanding, location intelligence, personalized preferences, restaurant ratings, review sentiment analysis, social recommendations, budget optimization, and contextual reasoning to provide users with highly personalized restaurant recommendations.
+
+Core Objective:
+
+"Don't make users search for restaurants. Let the AI understand where, what, why, when, with whom, and how much — and recommend the best restaurant for that specific situation."
+
+
+35. PROJECT POSITIONING
+-----------------------
+
+For an Agentic AI portfolio project, do not position this simply as:
+
+"I am building a Zomato clone."
+
+Instead, position it as:
+
+"I am building an Agentic AI-powered Restaurant Decision Engine."
+
+Zomato-like restaurant data is simply the domain.
+
+The real technical problem being solved is:
+
+Natural Language
+      |
+      v
+Intent
+      |
+      v
+Context
+      |
+      v
+Tools
+      |
+      v
+Data
+      |
+      v
+Reasoning
+      |
+      v
+Ranking
+      |
+      v
+Personalization
+      |
+      v
+Recommendation
+      |
+      v
+Action
+
+
+This project can demonstrate:
+
+- LLMs
+- Prompt Engineering
+- Structured Output
+- Embeddings
+- Vector Search
+- RAG
+- Tool Calling
+- AI Agents
+- Multi-Agent Orchestration
+- Recommendation Systems
+- Semantic Search
+- Memory
+- Personalization
+- AI Evaluation
+- AI Observability
+- Microservices
+- Spring Boot
+- Angular
+- AWS
+- Docker
+- CI/CD

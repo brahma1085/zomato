@@ -1,0 +1,16 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: location-service
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+# Map API Configurations (e.g., Google Maps, Mapbox)
+map:
+  api:
+    key: ${MAP_API_KEY:default_key}
