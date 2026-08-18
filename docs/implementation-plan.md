@@ -86,3 +86,11 @@ To ensure production readiness, the application implements structured and pervas
 ### Frontend (Angular)
 - Structured logging using `console.info` and `console.error` has been added to key components and services (`app.ts`, `location.service.ts`, `restaurant-detail.component.ts`, `ai-curated-results.component.ts`).
 - Lifecycle events, state changes, external API calls, and OAuth logic now output trace logs for easier debugging and user flow tracking.
+
+## 6. API Documentation (Swagger/OpenAPI)
+To facilitate seamless API exploration and testing without breaking existing functionality, Swagger (OpenAPI 3) has been integrated into the backend microservices.
+
+### Implementation Details
+- The `springdoc-openapi-starter-webmvc-ui` dependency (version `2.6.0`) is included in the `pom.xml` of each core service (`user-service`, `restaurant-service`, `ai-service`, etc.) as well as the `api-gateway`.
+- **Accessing the UI:** Developers can interact with the API endpoints of any service by navigating to `http://localhost:<service-port>/swagger-ui.html` locally.
+- **Auto-configuration:** By leveraging Spring Boot 3 auto-configuration, Swagger surfaces all REST controllers and data schemas automatically without requiring extensive manual boilerplate annotations.
