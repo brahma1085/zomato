@@ -3,10 +3,14 @@
 This guide provides a step-by-step walkthrough for deploying the Zomato UC microservices architecture to AWS, optimized for the **AWS Free Tier**. 
 
 > [!WARNING]
-> **Free Tier Limitations for Microservices**
-> The AWS Free Tier provides one `t2.micro` or `t3.micro` EC2 instance (1 vCPU, 1GB RAM) per month. 
-> **You cannot run 9 Spring Boot microservices on 1GB of RAM.** Java/Spring Boot is memory-intensive. Even with aggressive tuning (`-XX:MaxRAMPercentage=70.0`), each service requires at least 250MB-512MB to start up.
-> **To test for free:** You will only be able to deploy 1-2 services (e.g., `discovery-server` and `api-gateway`) at a time on a Free Tier EC2 instance. To run the full stack simultaneously, you will need to scale up to at least a `t3.large` or `t3.xlarge` instance, which will incur standard AWS hourly charges.
+> **Free Tier Realities & 1-2 Hour Testing Strategies**
+> AWS does **not** automatically provide $100-$200 in free credits for new accounts (unless you have a specific promotional code like AWS Activate or GitHub Student). Instead, new accounts get 12 months of **Free Tier Usage Limits** (e.g., 750 hours/month of `t2.micro` or `t3.micro` EC2 instances).
+>
+> **The Microservices Memory Challenge**: You cannot run 9 Spring Boot microservices on a single 1GB RAM `t2.micro` instance. 
+> 
+> **How to test for 1-2 hours practically for free (or pennies):**
+> **Option A (Strictly $0.00)**: You can launch **multiple** `t2.micro` instances (e.g., 5 instances) and attach them to your ECS cluster. Since the Free Tier provides 750 hours per month, running 5 instances for 2 hours equals 10 compute hours. This is well within your 750-hour limit and completely free.
+> **Option B (Pennies)**: You can launch a single, powerful `t3.xlarge` instance (4 vCPU, 16GB RAM) which easily fits all services. It is not in the Free Tier, but it only costs ~$0.16 per hour. Testing for 2 hours will cost you literally ~$0.32. Just remember to **terminate everything immediately** after testing.
 
 ---
 
@@ -163,8 +167,8 @@ For each task definition you registered, you need to run it as a Service.
 
 ---
 ## Summary of Free Tier Caveats
-- **Compute (ECS/EC2)**: Running all 9 Java microservices concurrently **will not fit** in the Free Tier 1GB RAM limit. You will either experience Out Of Memory (OOM) crashes, or you must provision a larger, paid instance.
-- **Storage (ECR)**: 500MB limit. 9 Java container images will easily exceed 1.5GB. You will be charged a few cents/dollars for the extra storage.
+- **Compute (ECS/EC2)**: Running all 9 Java microservices concurrently **will not fit** in a single Free Tier 1GB RAM limit. You must use either **Option A** (multiple `t2.micro` instances, keeping total monthly hours under 750) or **Option B** (a single paid instance like `t3.xlarge` for pennies per hour during your test).
+- **Storage (ECR)**: 500MB limit. 9 Java container images will exceed 1.5GB. You will be charged a few cents/dollars for the extra storage over a month, but it will be negligible for a 2-hour test.
 - **Secrets Manager**: Free for 30 days only.
 
 To avoid unexpected charges, **terminate all resources (RDS, OpenSearch, EC2, ElastiCache) when you are done testing.**
