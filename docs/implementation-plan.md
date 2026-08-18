@@ -1,100 +1,75 @@
-# Zomato UC - Deployment Implementation Plan
+# Zomato UC - Detailed Implementation Plan & Current State
 
-This plan details the necessary coding changes to implement the production-level deployment strategy outlined in `deployment-plan.md`.
+This document outlines the current functionality, architecture, and deployment plan for the Zomato UC (AI-Powered Intelligent Restaurant Recommendation & Discovery Platform).
 
-## User Review Required
-> [!IMPORTANT]
-> Please review the `.env.template` variables list and ensure it aligns with your Oracle deployment credentials.
+## 1. Project Overview & Current Functionality
+The platform replaces traditional filter-based restaurant search with an intelligent, conversational AI engine. Instead of answering "Search for restaurants," it answers "Where should I eat today?" based on deep context.
 
-## Proposed Changes
+### Core Features Implemented:
+- **Natural Language Search:** Converts natural queries (e.g., "Find me a good family restaurant under Rs.1,000") into structured search criteria.
+- **Location Intelligence:** Uses geospatial querying to find restaurants within a specific radius or travel time.
+- **Budget Intelligence:** Calculates estimated dining costs based on party size.
+- **Review Intelligence:** Summarizes thousands of reviews to highlight "What people love" and "Common complaints."
+- **Personalized Recommendations:** Factors in historical behavior, food preferences, and dining occasions. Features include "What are you craving?", "Because you like...", and "Try something new".
+- **Multi-Agent Orchestration:** Specialized agents (Location, Preference, Budget, Search, Review) collaborate to score, rank, and explain recommendations.
+- **Conversational Refinement:** Refine search results dynamically (e.g., "Only vegetarian" -> "Is parking available?").
 
-### 1. Environment Configuration
-#### [NEW] `.env.template`
-Add a template file in the root directory for all necessary environment variables:
-- `EUREKA_URL`
-- `KEYCLOAK_ISSUER_URI`
-- `FRONTEND_URL`
-- `USER_DB_URL`
-- `REVIEW_DB_URL`
-- `RESTAURANT_DB_URL`
-- `RECOMMENDATION_DB_URL`
-- `ELASTICSEARCH_URL`
-- AI service keys (e.g., `GEMINI_API_KEY`)
+## 2. System Architecture
+The application follows a highly scalable microservices architecture.
 
----
+### Multi-Agent AI Architecture
+The `ai-service` serves as the orchestrator. It uses an LLM (OpenAI/Claude/Gemini) through Spring AI to route natural language requests to specialized agents:
+- **Conversation Agent & Intent Agent:** Parses intent and extracts structured criteria.
+- **Location, Preference, Budget & Search Agents:** Gathers specific data constraints.
+- **Review & Social Agents:** Analyzes text sentiment and social signals.
+- **Recommendation, Ranking & Explanation Agents:** Scores results and provides a human-readable explanation for why a restaurant matches the user's intent.
 
-### 2. Spring Boot Configuration (`backend/*/src/main/resources/application.yml`)
-Modify `application.yml` files in all 9 backend services to use environment variables for hardcoded URLs (with fallbacks to localhost).
+### Backend Microservices (Java 21 + Spring Boot 3.x)
+1. **api-gateway:** Entry point, handles routing and Keycloak authentication.
+2. **discovery-server:** Netflix Eureka server for service registry.
+3. **user-service:** Manages user profiles, preferences, and history.
+4. **restaurant-service:** Manages core restaurant catalog, menus, and operating hours.
+5. **search-service:** Provides fast text and geospatial queries via Elasticsearch.
+6. **review-service:** Manages user reviews and integrates with AI for summarization.
+7. **recommendation-service:** Handles traditional filtering and semantic (vector) recommendations.
+8. **location-service:** Integrates with external Maps APIs.
+9. **ai-service:** Orchestrates the multi-agent workflow using Spring AI.
 
-#### [MODIFY] `backend/api-gateway/src/main/resources/application.yml` & `CorsConfig.java`
-- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
-- Update `spring.security.oauth2.resourceserver.jwt.issuer-uri` to `${KEYCLOAK_ISSUER_URI:http://localhost:9090/realms/zomato-realm}`
-- Update `CorsConfig.java` to allow `${FRONTEND_URL:http://localhost:4200}`
+### Data & Storage
+- **PostgreSQL (+ pgvector):** Core relational data and vector embeddings for semantic search.
+- **Elasticsearch:** Fast geospatial, text, and filtering engine.
+- **Redis:** Caching and session management.
 
-#### [MODIFY] `backend/discovery-server/src/main/resources/application.yml`
-- Change `eureka.instance.hostname` to `${EUREKA_HOSTNAME:localhost}`
+## 3. Technology Stack
+- **Frontend:** Angular/React (`frontend/web-ui`)
+- **Backend:** Java 21, Spring Boot 3.x
+- **AI Integration:** Spring AI, OpenAI/Gemini APIs
+- **Database:** PostgreSQL (with pgvector), Elasticsearch, Redis
+- **Security:** Keycloak, OAuth2, JWT
+- **Containerization & Orchestration:** Docker, Docker Compose
+- **Scripting & E2E Testing:** Python (`python/e2e_tests.py`), PowerShell scripts
 
-#### [MODIFY] `backend/user-service/src/main/resources/application.yml`
-- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
-- Update `spring.datasource.url` to `${USER_DB_URL:jdbc:h2:mem:zomatodb;DB_CLOSE_DELAY=-1}`
+## 4. Deployment Implementation Plan
+The application uses Docker Compose for orchestration.
 
-#### [MODIFY] `backend/review-service/src/main/resources/application.yml`
-- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
-- Update `spring.datasource.url` to `${REVIEW_DB_URL:jdbc:h2:mem:zomatodb;DB_CLOSE_DELAY=-1}`
+### 4.1. Environment Configuration
+The `.env` (generated from `.env.template`) configures secrets and URLs for the environment, including:
+- `EUREKA_URL`, `KEYCLOAK_ISSUER_URI`, `FRONTEND_URL`
+- `USER_DB_URL`, `REVIEW_DB_URL`, `RESTAURANT_DB_URL`, `RECOMMENDATION_DB_URL`
+- `ELASTICSEARCH_URL`, `GEMINI_API_KEY`
 
-#### [MODIFY] `backend/search-service/src/main/resources/application.yml`
-- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
-- Update `spring.elasticsearch.uris` to `${ELASTICSEARCH_URL:http://localhost:9200}`
+### 4.2. Dockerization
+Each of the 9 microservices is built using a multi-stage `Dockerfile`:
+1. **Build Stage:** `maven:3.9-eclipse-temurin-17` builds the application.
+2. **Runtime Stage:** Lightweight `eclipse-temurin:17-jre-alpine` runs the `.jar`.
+Memory constraints are applied (e.g., `-Xmx512m`) to optimize resource consumption.
 
-#### [MODIFY] `backend/restaurant-service/src/main/resources/application.yml`
-- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
-- Update `spring.datasource.url` to `${RESTAURANT_DB_URL:jdbc:h2:mem:testdb}`
+### 4.3. Docker Compose Orchestration
+The deployment relies on `docker/docker-compose.yml` (and `docker-compose.prod.yml`):
+- Provisions `postgres` (with `pgvector`), `elasticsearch`, `redis`, and `keycloak`.
+- Connects all backend services via a custom internal network (`zomato-network`).
+- Maps necessary host ports (e.g., `8080` for `api-gateway`, `8761` for `discovery-server`).
 
-#### [MODIFY] `backend/recommendation-service/src/main/resources/application.yml`
-- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
-- Update `spring.datasource.url` to `${RECOMMENDATION_DB_URL:jdbc:postgresql://localhost:5432/zomatodb}`
-
-#### [MODIFY] `backend/location-service/src/main/resources/application.yml`
-- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
-
-#### [MODIFY] `backend/ai-service/src/main/resources/application.yml`
-- Update `eureka.client.serviceUrl.defaultZone` to `${EUREKA_URL:http://localhost:8761/eureka/}`
-
----
-
-### 3. Dockerization
-
-#### [NEW] `backend/*/Dockerfile` (For all 9 services)
-Create a highly optimized multi-stage `Dockerfile` for each of the 9 backend services.
-1. **Build Stage:** Use `maven:3.9-eclipse-temurin-17` to build the JAR.
-2. **Runtime Stage:** Use a lightweight `eclipse-temurin:17-jre-alpine` for the runtime.
-3. Expose the respective service port.
-4. Set memory constraints (e.g., `-Xmx512m`) in the entrypoint to ensure the 24GB RAM limit on Oracle is respected.
-
----
-
-### 4. Docker Compose Orchestration
-
-#### [NEW] `docker/docker-compose.prod.yml`
-Create a Docker Compose file to orchestrate all services:
-- Define all 9 backend services using their respective `Dockerfile`s (`build: context: ../backend/<service>`).
-- Define an internal network (`zomato-network`).
-- Pass environment variables from `.env` to all containers.
-- Map only `api-gateway` (port 8080) and `discovery-server` (port 8761) to the host.
-
----
-
-### 5. CI/CD Pipeline
-
-#### [NEW] `.github/workflows/deploy-backend.yml`
-Create a GitHub Actions workflow:
-- Trigger on push to `main` branch, filtering for changes in `backend/` and `docker/`.
-- Use an SSH action (`appleboy/ssh-action`) to connect to the Oracle instance using secrets.
-- Run a script on the remote server to pull the latest code and execute `docker-compose -f docker/docker-compose.prod.yml up -d --build`.
-
-## Verification Plan
-### Automated Tests
-- N/A for deployment scripts, but we will test the Docker build process locally.
-### Manual Verification
-- Run `docker-compose -f docker/docker-compose.prod.yml build` to verify successful multi-stage builds.
-- Ask the user to verify the generated `.env.template` and `.github/workflows/deploy-backend.yml` files.
+### 4.4. CI/CD Pipeline
+- Automated scripts (`start_all.ps1`, `restart_services.ps1`) manage local multi-service testing.
+- A GitHub Actions workflow (`deploy-backend.yml`) handles SSH-based deployment to an Oracle/AWS server using the `docker-compose.prod.yml` configuration.
