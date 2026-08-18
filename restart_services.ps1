@@ -1,18 +1,34 @@
-Write-Host "Restarting Restaurant Service..."
-Start-Job -Name "restaurant-service-restart" -ScriptBlock {
-    cd "D:\GenAI\Practice\Zomato_UC\backend\restaurant-service"
-    .\mvnw.cmd spring-boot:run > "D:\GenAI\Practice\Zomato_UC\backend\restaurant-service.log" 2>&1
-}
+Write-Host "Killing any lingering Java processes to free ports..."
+Stop-Process -Name java -Force -ErrorAction SilentlyContinue
+Start-Sleep -Seconds 2
 
-Start-Sleep -Seconds 10
+$services = @(
+    "discovery-server",
+    "api-gateway",
+    "user-service",
+    "restaurant-service",
+    "search-service",
+    "location-service",
+    "review-service",
+    "recommendation-service",
+    "ai-service"
+)
 
-Write-Host "Restarting Recommendation Service..."
-Start-Job -Name "recommendation-service-restart" -ScriptBlock {
-    cd "D:\GenAI\Practice\Zomato_UC\backend\recommendation-service"
-    .\mvnw.cmd spring-boot:run > "D:\GenAI\Practice\Zomato_UC\backend\recommendation-service.log" 2>&1
+foreach ($svc in $services) {
+    Write-Host "Restarting $svc..."
+    Stop-Job -Name "$svc-restart" -ErrorAction SilentlyContinue
+    Remove-Job -Name "$svc-restart" -ErrorAction SilentlyContinue
+    Start-Job -Name "$svc-restart" -ScriptBlock {
+        param($svcName)
+        cd "D:\GenAI\Practice\Zomato_UC\backend\$svcName"
+        .\mvnw.cmd spring-boot:run > "D:\GenAI\Practice\Zomato_UC\backend\$svcName.log" 2>&1
+    } -ArgumentList $svc
+    Start-Sleep -Seconds 5
 }
 
 Write-Host "Restarting Frontend..."
+Stop-Job -Name "frontend-restart" -ErrorAction SilentlyContinue
+Remove-Job -Name "frontend-restart" -ErrorAction SilentlyContinue
 Start-Job -Name "frontend-restart" -ScriptBlock {
     cd "D:\GenAI\Practice\Zomato_UC\frontend\web-ui"
     npm start
