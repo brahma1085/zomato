@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+      on-profile: aws
+  elasticsearch:
+    uris: ${SEARCH_ENDPOINT:https://opensearch-domain.ap-south-1.es.amazonaws.com:443}
+    username: ${SEARCH_USERNAME:admin}
+    password: ${SEARCH_PASSWORD:AdminPassword123!}
+
+server:
+  shutdown: graceful
+  lifecycle:
+    timeout-per-shutdown-phase: 20s

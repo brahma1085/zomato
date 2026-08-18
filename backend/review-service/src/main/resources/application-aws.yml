@@ -1,0 +1,23 @@
+spring:
+  config:
+    activate:
+      on-profile: aws
+  datasource:
+    url: ${REVIEW_DB_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:review_db}}
+    username: ${DB_USERNAME:admin}
+    password: ${DB_PASSWORD:adminpassword}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  h2:
+    console:
+      enabled: false
+
+server:
+  shutdown: graceful
+  lifecycle:
+    timeout-per-shutdown-phase: 20s

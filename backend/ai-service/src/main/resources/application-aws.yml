@@ -1,0 +1,9 @@
+spring:
+  config:
+    activate:
+      on-profile: aws
+
+server:
+  shutdown: graceful
+  lifecycle:
+    timeout-per-shutdown-phase: 20s

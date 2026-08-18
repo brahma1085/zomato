@@ -1,0 +1,24 @@
+spring:
+  config:
+    activate:
+      on-profile: aws
+  datasource:
+    url: ${RESTAURANT_DB_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:restaurant_db}}
+    username: ${DB_USERNAME:admin}
+    password: ${DB_PASSWORD:adminpassword}
+    driver-class-name: org.postgresql.Driver
+  h2:
+    console:
+      enabled: false
+  jpa:
+    defer-datasource-initialization: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  shutdown: graceful
+  lifecycle:
+    timeout-per-shutdown-phase: 20s

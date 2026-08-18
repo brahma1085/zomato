@@ -6,9 +6,9 @@ spring:
     name: user-service
   datasource:
     url: ${USER_DB_URL:jdbc:h2:mem:zomatodb;DB_CLOSE_DELAY=-1}
-    username: sa
-    password: 
-    driver-class-name: org.h2.Driver
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:}
+    driver-class-name: ${DB_DRIVER:org.h2.Driver}
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,7 +16,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: ${JPA_DIALECT:org.hibernate.dialect.H2Dialect}
   h2:
     console:
       enabled: true
@@ -25,3 +25,12 @@ eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always

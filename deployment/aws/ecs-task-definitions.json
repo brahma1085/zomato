@@ -1,0 +1,108 @@
+{
+  "comment": "AWS ECS Task Definitions Template for Zomato UC Microservices",
+  "taskDefinitions": [
+    {
+      "family": "api-gateway-task",
+      "cpu": "256",
+      "memory": "512",
+      "networkMode": "awsvpc",
+      "requiresCompatibilities": ["FARGATE", "EC2"],
+      "containerDefinitions": [
+        {
+          "name": "api-gateway",
+          "image": "<AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/api-gateway:latest",
+          "portMappings": [
+            { "containerPort": 8080, "hostPort": 8080, "protocol": "tcp" }
+          ],
+          "environment": [
+            { "name": "SPRING_PROFILES_ACTIVE", "value": "aws" },
+            { "name": "EUREKA_URL", "value": "http://discovery-server:8761/eureka/" },
+            { "name": "KEYCLOAK_ISSUER_URI", "value": "http://<YOUR_AWS_ALB_DNS_NAME>/realms/zomato-realm" },
+            { "name": "FRONTEND_URL", "value": "http://localhost:4200" },
+            { "name": "JAVA_TOOL_OPTIONS", "value": "-XX:MaxRAMPercentage=70.0 -XX:+UseContainerSupport" }
+          ],
+          "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+              "awslogs-group": "/aws/ecs/api-gateway",
+              "awslogs-region": "ap-south-1",
+              "awslogs-stream-prefix": "ecs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "user-service-task",
+      "cpu": "256",
+      "memory": "512",
+      "networkMode": "awsvpc",
+      "requiresCompatibilities": ["FARGATE", "EC2"],
+      "containerDefinitions": [
+        {
+          "name": "user-service",
+          "image": "<AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/user-service:latest",
+          "portMappings": [
+            { "containerPort": 8081, "hostPort": 8081, "protocol": "tcp" }
+          ],
+          "environment": [
+            { "name": "SPRING_PROFILES_ACTIVE", "value": "aws" },
+            { "name": "EUREKA_URL", "value": "http://discovery-server:8761/eureka/" },
+            { "name": "DB_HOST", "value": "<RDS_ENDPOINT>" },
+            { "name": "DB_NAME", "value": "user_db" },
+            { "name": "JAVA_TOOL_OPTIONS", "value": "-XX:MaxRAMPercentage=70.0 -XX:+UseContainerSupport" }
+          ],
+          "secrets": [
+            { "name": "DB_USERNAME", "valueFrom": "arn:aws:secretsmanager:ap-south-1:<ACCOUNT_ID>:secret:zomato/rds-username" },
+            { "name": "DB_PASSWORD", "valueFrom": "arn:aws:secretsmanager:ap-south-1:<ACCOUNT_ID>:secret:zomato/rds-password" }
+          ],
+          "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+              "awslogs-group": "/aws/ecs/user-service",
+              "awslogs-region": "ap-south-1",
+              "awslogs-stream-prefix": "ecs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "keycloak-task",
+      "cpu": "512",
+      "memory": "1024",
+      "networkMode": "awsvpc",
+      "requiresCompatibilities": ["FARGATE", "EC2"],
+      "containerDefinitions": [
+        {
+          "name": "keycloak",
+          "image": "quay.io/keycloak/keycloak:24.0.4",
+          "command": ["start"],
+          "portMappings": [
+            { "containerPort": 8080, "hostPort": 8080, "protocol": "tcp" }
+          ],
+          "environment": [
+            { "name": "KC_DB", "value": "postgres" },
+            { "name": "KC_DB_URL", "value": "jdbc:postgresql://<RDS_ENDPOINT>:5432/keycloak_db" },
+            { "name": "KC_HOSTNAME", "value": "<YOUR_AWS_ALB_DNS_NAME>" },
+            { "name": "KC_PROXY_HEADERS", "value": "xforwarded" }
+          ],
+          "secrets": [
+            { "name": "KC_DB_USERNAME", "valueFrom": "arn:aws:secretsmanager:ap-south-1:<ACCOUNT_ID>:secret:zomato/rds-username" },
+            { "name": "KC_DB_PASSWORD", "valueFrom": "arn:aws:secretsmanager:ap-south-1:<ACCOUNT_ID>:secret:zomato/rds-password" },
+            { "name": "KEYCLOAK_ADMIN", "valueFrom": "arn:aws:secretsmanager:ap-south-1:<ACCOUNT_ID>:secret:zomato/keycloak-admin" },
+            { "name": "KEYCLOAK_ADMIN_PASSWORD", "valueFrom": "arn:aws:secretsmanager:ap-south-1:<ACCOUNT_ID>:secret:zomato/keycloak-admin-password" }
+          ],
+          "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+              "awslogs-group": "/aws/ecs/keycloak",
+              "awslogs-region": "ap-south-1",
+              "awslogs-stream-prefix": "ecs"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

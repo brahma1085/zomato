@@ -8,8 +8,8 @@ spring:
     name: recommendation-service
   datasource:
     url: ${RECOMMENDATION_DB_URL:jdbc:postgresql://localhost:5432/zomatodb}
-    username: admin
-    password: adminpassword
+    username: ${DB_USERNAME:admin}
+    password: ${DB_PASSWORD:adminpassword}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -27,11 +27,11 @@ spring:
         dimensions: 384
     openai:
       # Using Groq's free OpenAI-compatible endpoint!
-      base-url: https://api.groq.com/openai
+      base-url: ${AI_BASE_URL:https://api.groq.com/openai}
       api-key: ${GROQ_API_KEY}
       chat:
         options:
-          model: openai/gpt-oss-20b
+          model: ${AI_MODEL:openai/gpt-oss-20b}
       embedding:
         enabled: false
 
@@ -39,3 +39,12 @@ eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
