@@ -73,3 +73,16 @@ The deployment relies on `docker/docker-compose.yml` (and `docker-compose.prod.y
 ### 4.4. CI/CD Pipeline
 - Automated scripts (`start_all.ps1`, `restart_services.ps1`) manage local multi-service testing.
 - A GitHub Actions workflow (`deploy-backend.yml`) handles SSH-based deployment to an Oracle/AWS server using the `docker-compose.prod.yml` configuration.
+
+## 5. Logging Mechanism Implementation
+To ensure production readiness, the application implements structured and pervasive logging across both the backend and frontend.
+
+### Backend (Spring Boot SLF4J + Logback)
+- `System.out.println` and `System.err.println` have been removed in favor of standard SLF4J loggers.
+- **Controllers:** `UserController`, `SearchController`, `ReviewController`, `RestaurantController`, `RecommendationController`, `LocationController`, and `AiController` all initialize `org.slf4j.Logger`. They trace incoming requests and parameters at the `INFO` level.
+- **Exception Handling:** Hardcoded `e.printStackTrace()` occurrences have been replaced with `logger.error("Exception message", e)` to securely preserve and format full stack traces.
+- Console logging is automatically formatted with timestamps, thread names, log levels, and class names via Spring Boot.
+
+### Frontend (Angular)
+- Structured logging using `console.info` and `console.error` has been added to key components and services (`app.ts`, `location.service.ts`, `restaurant-detail.component.ts`, `ai-curated-results.component.ts`).
+- Lifecycle events, state changes, external API calls, and OAuth logic now output trace logs for easier debugging and user flow tracking.

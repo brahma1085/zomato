@@ -11,10 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @Service
 public class RecommendationService {
 
+    private static final Logger logger = LoggerFactory.getLogger(RecommendationService.class);
     private final VectorStore vectorStore;
     private final RestaurantServiceClient restaurantServiceClient;
 
@@ -27,7 +29,7 @@ public class RecommendationService {
         // Fetch and embed real-time restaurants for the given location if provided
         if ((lat != null && lng != null) || (location != null && !location.trim().isEmpty())) {
             try {
-                System.out.println("Fetching real-time restaurants for location: " + location + " or coordinates: " + lat + "," + lng);
+                logger.info("Fetching real-time restaurants for location: {} or coordinates: {},{}", location, lat, lng);
                 List<Map<String, Object>> localRestaurants = restaurantServiceClient.getAllRestaurants(location, lat, lng);
                 if (localRestaurants != null && !localRestaurants.isEmpty()) {
                     List<Document> similarDocuments = new ArrayList<>();
@@ -36,7 +38,7 @@ public class RecommendationService {
                                 SearchRequest.query(context).withTopK(20)
                         );
                     } catch (Exception e) {
-                        System.err.println("Vector search failed during location filtering: " + e.getMessage());
+                        logger.error("Vector search failed during location filtering: {}", e.getMessage());
                     }
                     
                     if (!similarDocuments.isEmpty()) {
@@ -79,7 +81,7 @@ public class RecommendationService {
                     return localRestaurants;
                 }
             } catch (Exception e) {
-                System.err.println("Failed to fetch restaurants for location " + location + ": " + e.getMessage());
+                logger.error("Failed to fetch restaurants for location {}: {}", location, e.getMessage());
             }
         }
 
@@ -103,7 +105,7 @@ public class RecommendationService {
                         .collect(Collectors.toList());
             }
         } catch (Exception e) {
-            System.err.println("Vector search failed. Fetching real-time results from restaurant-service as fallback...");
+            logger.warn("Vector search failed. Fetching real-time results from restaurant-service as fallback...");
         }
         
         // Fallback: Fetch real-time results from restaurant-service
@@ -114,7 +116,7 @@ public class RecommendationService {
                 return allRestaurants.stream().limit(5).collect(Collectors.toList());
             }
         } catch (Exception ex) {
-            System.err.println("Failed to fetch real-time restaurants: " + ex.getMessage());
+            logger.error("Failed to fetch real-time restaurants: {}", ex.getMessage());
         }
         
         return new ArrayList<>();

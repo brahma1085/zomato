@@ -49,6 +49,7 @@ export class App implements AfterViewChecked {
   isAuthenticated = signal(false);
 
   private async configureOAuth() {
+    console.info('App initialized, checking OAuth status...');
     this.oauthService.configure(authConfig);
     try {
       await this.oauthService.loadDiscoveryDocumentAndTryLogin();
@@ -111,6 +112,7 @@ export class App implements AfterViewChecked {
     this.currentInput.set('');
     this.isThinking.set(true);
 
+    console.info('Sending AI query:', query);
     const loc = this.currentLocation();
     this.aiService.sendMessage(query, 'user123', history, loc?.lat, loc?.lng).subscribe({
       next: (response) => {

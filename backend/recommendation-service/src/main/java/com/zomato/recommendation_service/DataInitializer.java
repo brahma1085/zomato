@@ -14,9 +14,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.embedding.EmbeddingModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Configuration
 public class DataInitializer {
+
+    private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 
     @Bean
     VectorStore vectorStore(EmbeddingModel embeddingModel) {
@@ -31,7 +35,7 @@ public class DataInitializer {
                 int retries = 0;
                 while (!initialized && retries < 15) {
                     try {
-                        System.out.println("Initializing Vector Store with real-time restaurant data... (Attempt " + (retries + 1) + ")");
+                        logger.info("Initializing Vector Store with real-time restaurant data... (Attempt {})", (retries + 1));
                         List<Map<String, Object>> realRestaurants = restaurantServiceClient.getAllRestaurants(null, null, null);
                         if (realRestaurants != null && !realRestaurants.isEmpty()) {
                             List<Document> documents = realRestaurants.stream().map(r -> {
@@ -50,14 +54,14 @@ public class DataInitializer {
                             }).collect(Collectors.toList());
                             
                             vectorStore.add(documents);
-                            System.out.println("Real restaurants successfully added to the vector store.");
+                            logger.info("Real restaurants successfully added to the vector store.");
                             initialized = true;
                         } else {
-                            System.out.println("No real restaurants found yet. Retrying in 10 seconds...");
+                            logger.warn("No real restaurants found yet. Retrying in 10 seconds...");
                             Thread.sleep(10000);
                         }
                     } catch (Exception e) {
-                        System.err.println("Failed to fetch restaurants for vector store initialization: " + e.getMessage() + ". Retrying in 10 seconds...");
+                        logger.error("Failed to fetch restaurants for vector store initialization: {}. Retrying in 10 seconds...", e.getMessage());
                         try {
                             Thread.sleep(10000);
                         } catch (InterruptedException ie) {

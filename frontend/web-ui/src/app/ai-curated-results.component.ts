@@ -49,6 +49,7 @@ export class AiCuratedResultsComponent implements OnInit {
       next: (res) => {
         this.chatMessage.set(res.message);
         this.restaurants.set(res.restaurants || []);
+        console.info('Curated results loaded with', res.restaurants?.length || 0, 'items');
         
         if (res.restaurants && res.restaurants.length > 0) {
           const center = { lat, lng };

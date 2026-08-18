@@ -6,9 +6,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class IntentAgent {
+
+    private static final Logger logger = LoggerFactory.getLogger(IntentAgent.class);
 
     private final ChatClient chatClient;
 
@@ -51,7 +55,7 @@ public class IntentAgent {
                 response.setExtractedParameters(new HashMap<>());
             }
         } catch (Exception e) {
-            System.err.println("Failed to parse Intent JSON: " + e.getMessage());
+            logger.error("Failed to parse Intent JSON: {}", e.getMessage());
             // Fallback logic
             if (aiResponse.toUpperCase().contains("RECOMMENDATION")) {
                 response.setIntentType("RECOMMENDATION");

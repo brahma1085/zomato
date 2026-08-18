@@ -24,11 +24,13 @@ export class RestaurantDetailComponent implements OnInit {
     if (state && state.restaurant) {
       this.restaurant = state.restaurant;
       this.restaurantId = this.restaurant.id || this.restaurant.restaurantId || '1';
+      console.info('Loading details for restaurant ID:', this.restaurantId);
       this.loading = false;
       this.fetchReviews();
     } else {
       this.route.paramMap.subscribe(params => {
         this.restaurantId = params.get('id') || '1';
+        console.info('Loading details for restaurant ID:', this.restaurantId);
         this.fetchRestaurantData();
       });
     }

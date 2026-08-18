@@ -9,9 +9,13 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class ExternalRestaurantService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ExternalRestaurantService.class);
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
@@ -58,7 +62,7 @@ public class ExternalRestaurantService {
                 try {
                     overpassResponse = restTemplate.exchange(overpassUrl, org.springframework.http.HttpMethod.GET, entity, String.class, overpassQuery).getBody();
                 } catch (Exception ex) {
-                    System.err.println("Primary Overpass API failed: " + ex.getMessage() + ". Trying fallback...");
+                    logger.warn("Primary Overpass API failed: {}. Trying fallback...", ex.getMessage());
                     String fallbackUrl = "https://lz4.overpass-api.de/api/interpreter?data={query}";
                     overpassResponse = restTemplate.exchange(fallbackUrl, org.springframework.http.HttpMethod.GET, entity, String.class, overpassQuery).getBody();
                 }
@@ -111,7 +115,7 @@ public class ExternalRestaurantService {
                 }
             }
         } catch (Exception e) {
-            System.err.println("Error fetching external restaurants for city " + city + ": " + e.getMessage());
+            logger.error("Error fetching external restaurants for city {}: {}", city, e.getMessage());
         }
         return restaurants;
     }
@@ -130,7 +134,7 @@ public class ExternalRestaurantService {
             try {
                 overpassResponse = restTemplate.exchange(overpassUrl, org.springframework.http.HttpMethod.GET, entity, String.class, overpassQuery).getBody();
             } catch (Exception ex) {
-                System.err.println("Primary Overpass API failed: " + ex.getMessage() + ". Trying fallback...");
+                logger.warn("Primary Overpass API failed: {}. Trying fallback...", ex.getMessage());
                 String fallbackUrl = "https://lz4.overpass-api.de/api/interpreter?data={query}";
                 overpassResponse = restTemplate.exchange(fallbackUrl, org.springframework.http.HttpMethod.GET, entity, String.class, overpassQuery).getBody();
             }
@@ -179,7 +183,7 @@ public class ExternalRestaurantService {
                 }
             }
         } catch (Exception e) {
-            System.err.println("Error fetching external restaurants for location " + lat + "," + lon + ": " + e.getMessage());
+            logger.error("Error fetching external restaurants for location {},{}: {}", lat, lon, e.getMessage());
         }
         return restaurants;
     }

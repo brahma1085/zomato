@@ -13,9 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class AiOrchestratorService {
+
+    private static final Logger logger = LoggerFactory.getLogger(AiOrchestratorService.class);
 
     private final IntentAgent intentAgent;
     private final PreferenceAgent preferenceAgent;
@@ -77,7 +81,7 @@ public class AiOrchestratorService {
                 try {
                     userProfile = userServiceClient.getUserProfile(userId);
                 } catch (Exception e) {
-                    System.err.println("Could not fetch user profile for " + userId);
+                    logger.error("Could not fetch user profile for {}", userId);
                 }
                 
                 List<String> orderHistory = (List<String>) userProfile.getOrDefault("dietaryPreferences", Collections.emptyList());
@@ -176,14 +180,14 @@ public class AiOrchestratorService {
                     String aiNote = recommendationAgent.generateAiNote(intent.getExtractedParameters(), candidate);
                     candidate.put("aiNotes", aiNote);
                 } catch (Exception e) {
-                    System.err.println("Failed to generate AI note for candidate: " + e.getMessage());
+                    logger.error("Failed to generate AI note for candidate: {}", e.getMessage());
                 }
             }
 
             return new ChatResponse(explanation, finalCandidates);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception occurred", e);
             return new ChatResponse("My AI brain is currently taking a break. Please try your request again in a few moments.", Collections.emptyList());
         }
     }

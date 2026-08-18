@@ -9,9 +9,11 @@ export class LocationService {
   }
 
   private initLocation() {
+    console.info('Requesting user geolocation...');
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          console.info('Geolocation retrieved successfully');
           this.currentLocation.set({ lat: position.coords.latitude, lng: position.coords.longitude });
         },
         (error) => {
@@ -30,9 +32,11 @@ export class LocationService {
     }
     
     return new Promise((resolve) => {
+      console.info('Requesting user geolocation (async)...');
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
+            console.info('Geolocation retrieved successfully (async)');
             const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
             this.currentLocation.set(loc);
             resolve(loc);

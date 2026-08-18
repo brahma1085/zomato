@@ -6,9 +6,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class RestaurantService {
+
+    private static final Logger logger = LoggerFactory.getLogger(RestaurantService.class);
 
     private final RestaurantRepository restaurantRepository;
     private final ExternalRestaurantService externalRestaurantService;
@@ -42,7 +46,7 @@ public class RestaurantService {
                         Restaurant saved = restaurantRepository.save(r);
                         localRestaurants.add(saved);
                     } catch (Exception e) {
-                        System.err.println("Failed to save external restaurant: " + e.getMessage());
+                        logger.error("Failed to save external restaurant: {}", e.getMessage());
                     }
                 }
             }
@@ -61,7 +65,7 @@ public class RestaurantService {
                     Restaurant saved = restaurantRepository.save(r);
                     localRestaurants.add(saved);
                 } catch (Exception e) {
-                    System.err.println("Failed to save external restaurant: " + e.getMessage());
+                    logger.error("Failed to save external restaurant: {}", e.getMessage());
                 }
             }
         }
